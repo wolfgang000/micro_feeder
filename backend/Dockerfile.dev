@@ -1,0 +1,16 @@
+FROM python:3.11.4 as requirements-stage
+
+WORKDIR /tmp
+RUN pip install poetry
+COPY ./pyproject.toml ./poetry.lock* /tmp/
+RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
+
+FROM python:3.11.4
+
+ENV APP_HOME /home/user/app
+RUN mkdir -p $APP_HOME
+WORKDIR $APP_HOME
+COPY --from=requirements-stage /tmp/requirements.txt $APP_HOME/requirements.txt
+RUN pip install --no-cache-dir -r $APP_HOME/requirements.txt
+
+CMD ["/bin/sh", "-c", "pip install -e . && uvicorn backend.main:app --reload --host 0.0.0.0 --reload"]

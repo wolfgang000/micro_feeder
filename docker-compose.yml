@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ././backend:/home/user/app/
+    ports:
+      - 8000:8000
+    environment:
+      DATABASE_URL: postgres://test_user:test_password@localhost:5432/micro_feeder_dev
+      DB_POOL_SIZE: 10
