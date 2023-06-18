@@ -13,4 +13,4 @@ WORKDIR $APP_HOME
 COPY --from=requirements-stage /tmp/requirements.txt $APP_HOME/requirements.txt
 RUN pip install --no-cache-dir -r $APP_HOME/requirements.txt
 
-CMD ["/bin/sh", "-c", "pip install -e . && uvicorn backend.main:app --reload --host 0.0.0.0 --reload"]
+CMD ["/bin/sh", "-c", "pip install -e . && uvicorn backend.main:app --reload --host 0.0.0.0 --port 8001 --reload"]
