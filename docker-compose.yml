@@ -1,6 +1,8 @@
 version: "3.8"
 services:
   backend:
+    depends_on:
+      - db_dev
     build:
       context: backend
       dockerfile: Dockerfile.dev
@@ -9,5 +11,25 @@ services:
     ports:
       - 8000:8000
     environment:
-      DATABASE_URL: postgres://test_user:test_password@localhost:5432/micro_feeder_dev
+      DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_dev
       DB_POOL_SIZE: 10
+
+  db_dev:
+    image: "postgres:10.15-alpine"
+    environment:
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: postgres_dev
+    volumes:
+      - pgdata_dev:/var/lib/postgresql/data:rw
+    ports:
+      - 8004:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "test_user", "-d", "postgres_dev"]
+      interval: 30s
+      timeout: 3s
+      retries: 30
+      start_period: 15s
+
+volumes:
+  pgdata_dev:
