@@ -1,0 +1,6 @@
+{
+    "python.formatting.provider": "black",
+    "python.formatting.blackPath": "backend/venv/bin/black",
+    "editor.formatOnSave": true,
+    "python.defaultInterpreterPath": "backend/venv/bin/python"
+}
