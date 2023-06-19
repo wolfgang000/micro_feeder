@@ -1,3 +1,3 @@
 ### Todo
 
-- [ ] Add mypy
+- [ ] Add deployment script
