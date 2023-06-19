@@ -15,3 +15,9 @@ poetry install
 ```
 make format
 ```
+
+- Type check with mypy
+
+```
+make type-check
+```
