@@ -2,6 +2,7 @@ from backend.core import unit_of_work
 from result import Ok, Err, Result
 from sqlalchemy.sql import text
 
+# TODO: Add proper loggers and better error messages
 
 async def get_db_health_status(uow: unit_of_work.SqlAlchemyUnitOfWork) -> Result:
     try: 

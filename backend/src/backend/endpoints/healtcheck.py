@@ -5,6 +5,8 @@ from backend.core import unit_of_work, services
 
 router = APIRouter()
 
+# TODO: Improve and clean this later
+
 @router.get("/api/health")
 async def get_health(response: Response):
     uow = unit_of_work.SqlAlchemyUnitOfWork()
