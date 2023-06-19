@@ -11,7 +11,3 @@ class Config:
     DATABASE_URL = get_env_or_raise_exception("DATABASE_URL")
     DB_POOL_SIZE = int(get_env_or_raise_exception("DB_POOL_SIZE"))
 
-    @classmethod
-    def get_database_url(cls):
-        return cls.DATABASE_URL
-
