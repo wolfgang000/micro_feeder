@@ -1,0 +1,41 @@
+name: Backend CI
+
+on:
+  push:
+    paths:
+      - "backend/**"
+    branches:
+      - main
+  pull_request:
+    paths:
+      - "backend/**"
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: backend
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install poetry
+        run: pipx install poetry==1.5.1
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11.4"
+          cache: "poetry"
+
+      - name: Install dependencies
+        run: poetry install --no-interaction
+
+      - name: Check format
+        run: poetry run black  --check ./

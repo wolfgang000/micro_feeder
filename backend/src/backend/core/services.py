@@ -4,10 +4,11 @@ from sqlalchemy.sql import text
 
 # TODO: Add proper loggers and better error messages
 
+
 async def get_db_health_status(uow: unit_of_work.SqlAlchemyUnitOfWork) -> Result:
-    try: 
+    try:
         async with uow:
-            result = await uow.session.execute(text('SELECT 1'))
+            result = await uow.session.execute(text("SELECT 1"))
             match list(result):
                 case [(1,)]:
                     return Ok()
