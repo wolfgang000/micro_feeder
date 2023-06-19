@@ -20,7 +20,7 @@ defaults:
     working-directory: backend
 
 env:
-  DATABASE_URL: postgresql+psycopg://test_user:test_password@localhost:5432/postgres_dev
+  DATABASE_URL: postgres://test_user:test_password@localhost:5432/postgres_dev
   DB_POOL_SIZE: 10
 
 jobs:

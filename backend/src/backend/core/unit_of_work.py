@@ -28,7 +28,7 @@ class AbstractUnitOfWork(abc.ABC):
 
 class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
     ENGINE = create_async_engine(
-        Config.DATABASE_URL,
+        Config.DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1),
         pool_size=Config.DB_POOL_SIZE,
     )
 
