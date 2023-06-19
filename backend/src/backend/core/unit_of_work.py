@@ -40,7 +40,7 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
         self.session_factory = session_factory
 
     async def  __aenter__(self):
-        uow = super().__aenter__()
+        uow = await super().__aenter__()
         self.session = self.session_factory()
         return uow
 
