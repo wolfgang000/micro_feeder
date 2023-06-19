@@ -1,0 +1,43 @@
+name: Backend CI
+
+on:
+  push:
+    paths:
+      - "backend/**"
+    branches:
+      - main
+  pull_request:
+    paths:
+      - "backend/**"
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: backend
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: self-hosted
+    env:
+      ImageOS: ubuntu20
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.11.4
+
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: 1.5.1-0
+
+      - name: Install dependencies
+        run: poetry install --no-interaction
+
+      - name: Check format
+        run: black --check ./
