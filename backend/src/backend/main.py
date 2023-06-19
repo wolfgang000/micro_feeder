@@ -1,7 +1,5 @@
 from fastapi import FastAPI
-from backend.endpoints import (
-    healtcheck
-)
+from backend.endpoints import healtcheck
 
 app = FastAPI()
 

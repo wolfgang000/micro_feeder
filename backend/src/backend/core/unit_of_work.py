@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
 from backend.config import Config
 
+
 class AbstractUnitOfWork(abc.ABC):
     session: AsyncSession
 
@@ -25,7 +26,6 @@ class AbstractUnitOfWork(abc.ABC):
         raise NotImplementedError
 
 
-
 class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
     ENGINE = create_async_engine(
         Config.DATABASE_URL,
@@ -39,7 +39,7 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
     def __init__(self, session_factory=SESSION_FACTORY):
         self.session_factory = session_factory
 
-    async def  __aenter__(self):
+    async def __aenter__(self):
         uow = await super().__aenter__()
         self.session = self.session_factory()
         return uow
@@ -47,7 +47,6 @@ class SqlAlchemyUnitOfWork(AbstractUnitOfWork):
     async def __aexit__(self, *args):
         task = asyncio.create_task(self.session.close())
         await asyncio.shield(task)
-        
 
     async def commit(self):
         self.session.commit()
