@@ -14,7 +14,7 @@ async def get_db_health_status(uow: unit_of_work.SqlAlchemyUnitOfWork) -> Result
                     return Ok()
                 case value:
                     print(f"Error, expected [(1,)] but got {value}")
-                    return Err(err)
+                    return Err(value)
     except Exception as err:
         print(f"Unexpected {err=}, {type(err)=}")
         return Err(err)

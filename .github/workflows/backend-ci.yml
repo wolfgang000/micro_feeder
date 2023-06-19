@@ -38,4 +38,7 @@ jobs:
         run: poetry install --no-interaction
 
       - name: Check format
-        run: poetry run black  --check ./
+        run: poetry run black src tests
+
+      - name: Check types
+        run: poetry run mypy src tests

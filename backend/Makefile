@@ -1,2 +1,5 @@
 format: 
-	venv/bin/black ./
+	venv/bin/black src tests
+
+type-check: 
+	venv/bin/mypy src tests
