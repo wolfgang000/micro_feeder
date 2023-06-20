@@ -18,3 +18,19 @@ def test_create_subscription():
     assert response.status_code == 201
     response = response.json()
     assert response["id"] is not None
+
+
+def test_try_create_subscription_with_invalid_data():
+    response = client.post(
+        "/web/subscriptions/",
+        content=json.dumps(
+            {
+                "webhook_url": "no-a-url",
+                "feed_url": "",
+            }
+        ),
+    )
+    assert response.status_code == 422
+    response = response.json()
+    assert response["detail"][0]["msg"] == "invalid or missing URL scheme"
+    assert response["detail"][1]["msg"] == "ensure this value has at least 1 characters"
