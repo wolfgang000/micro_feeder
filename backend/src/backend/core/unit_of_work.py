@@ -13,7 +13,7 @@ class SubscriptionRepository:
         self.session = session
 
     async def create(self, subscription: models.Subscription) -> models.Subscription:
-        subscription.inserted_at = datetime.now()
+        subscription.inserted_at = datetime.utcnow()
         self.session.add(subscription)
         await self.session.flush()
         return subscription

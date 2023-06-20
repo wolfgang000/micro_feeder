@@ -18,6 +18,7 @@ def test_create_subscription():
     assert response.status_code == 201
     response = response.json()
     assert response["id"] is not None
+    assert response["inserted_at"] is not None
 
 
 def test_try_create_subscription_with_invalid_data():
