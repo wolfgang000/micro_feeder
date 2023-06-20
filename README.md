@@ -64,6 +64,26 @@ git push server-backend
 git push server-frontend
 ```
 
+# Production debugging
+
+## Enter to the container
+
+```
+dokku enter micro-feeder-back web /bin/sh
+```
+
+## Show logs
+
+```
+dokku logs micro-feeder-back
+```
+
+## Open a psql terminal
+
+```
+dokku postgres:connect micro-feeder-db
+```
+
 ### Todo
 
 - [ ] Add deployment script
