@@ -7,7 +7,7 @@ router = APIRouter()
 # TODO: Improve and clean this later
 
 
-@router.get("/api/health")
+@router.get("/health")
 async def get_health(response: Response):
     uow = unit_of_work.SqlAlchemyUnitOfWork()
     result = await services.get_db_health_status(uow)
