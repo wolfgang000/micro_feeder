@@ -27,3 +27,9 @@ make type-check
 ```
 make pytest
 ```
+
+- Run migrations
+
+```
+make db-migrations
+```
