@@ -4,5 +4,14 @@
     "editor.formatOnSave": true,
     "python.defaultInterpreterPath": "backend/venv/bin/python",
     "python.linting.mypyEnabled": true,
-    "python.linting.mypyPath": "backend/venv/bin/mypy"
+    "python.linting.mypyPath": "backend/venv/bin/mypy",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
 }
