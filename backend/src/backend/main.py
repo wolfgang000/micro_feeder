@@ -6,8 +6,3 @@ app = FastAPI()
 
 app.include_router(healtcheck.router)
 app.include_router(subscription.router)
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}

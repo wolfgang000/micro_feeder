@@ -9,7 +9,12 @@ async def test_create_subscription():
     async with AsyncClient(app=app, base_url="http://test") as ac:
         response = await ac.post(
             "/web/subscriptions/",
-            content=json.dumps({"webhook_url": "value", "feed_url": "test"}),
+            content=json.dumps(
+                {
+                    "webhook_url": "http://example.com/webhook",
+                    "feed_url": "http://example.com/rss",
+                }
+            ),
         )
     assert response.status_code == 201
     response = response.json()

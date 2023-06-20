@@ -6,5 +6,7 @@ router = APIRouter()
 
 
 @router.post("/web/subscriptions/", status_code=201)
-async def create_subscription(subscription: serializers.Subscription):
+async def create_subscription(subscriptionRequest: serializers.SubscriptionRequest):
+    uow = unit_of_work.SqlAlchemyUnitOfWork()
+    subscription = await services.create_subscription(uow, subscriptionRequest.dict())
     return subscription
