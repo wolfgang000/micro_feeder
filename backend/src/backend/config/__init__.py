@@ -16,4 +16,4 @@ def get_env_or_raise_exception(env_var_name: str) -> str:
 
 class Config:
     DATABASE_URL = get_env_or_raise_exception(database_url_env_name)
-    DB_POOL_SIZE = int(get_env_or_raise_exception("DB_POOL_SIZE"))
+    DB_POOL_SIZE = int(os.getenv("DB_POOL_SIZE", "10"))
