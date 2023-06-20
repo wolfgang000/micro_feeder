@@ -4,7 +4,7 @@
 
 # Get started
 
-```
+```sh
 # Start the containers
 docker compose up
 
