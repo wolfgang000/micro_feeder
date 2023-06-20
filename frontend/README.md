@@ -39,6 +39,31 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+### Format the code
+
+```sh
+npm run format
+```
+
+### Run End-to-End Tests with [Playwright](https://playwright.dev)
+
+```sh
+# Install browsers for the first run
+npx playwright install
+
+# Runs the end-to-end tests
+npm run test:e2e
+
+# Runs the tests only on Chromium
+npm run test:e2e -- --project=chromium
+
+# Runs the tests of a specific file
+npm run test:e2e -- tests/example.spec.ts
+
+# Runs the tests in debug mode
+npm run test:e2e -- --debug
+```
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

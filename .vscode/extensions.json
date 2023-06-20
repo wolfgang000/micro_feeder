@@ -1,5 +1,7 @@
 {
   "recommendations": [
-    "ms-python.python"
+    "ms-python.python",
+    "ms-playwright.playwright",
+    "esbenp.prettier-vscode"
   ]
 }

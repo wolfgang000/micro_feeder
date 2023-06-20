@@ -10,3 +10,4 @@ class SubscriptionResponse(BaseModel):
     id: int
     webhook_url: str
     feed_url: str
+    inserted_at: str

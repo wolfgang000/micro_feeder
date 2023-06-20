@@ -1,7 +1,4 @@
-from typing import List
-from typing import Optional
-from sqlalchemy import ForeignKey
-from sqlalchemy import String
+import datetime
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -17,6 +14,7 @@ class Subscription(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     webhook_url: Mapped[str]
     feed_url: Mapped[str]
+    inserted_at: Mapped[datetime.datetime]
 
     def __init__(self, webhook_url: str, feed_url: str):
         self.webhook_url = webhook_url
