@@ -1,6 +1,6 @@
 from __future__ import annotations
 import asyncio
-from sqlalchemy import MetaData
+from datetime import datetime, timezone
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,6 +13,7 @@ class SubscriptionRepository:
         self.session = session
 
     async def create(self, subscription: models.Subscription) -> models.Subscription:
+        subscription.inserted_at = datetime.now()
         self.session.add(subscription)
         await self.session.flush()
         return subscription
