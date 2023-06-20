@@ -5,7 +5,11 @@
 # Get started
 
 ```
+# Start the containers
 docker compose up
+
+# Run the migrations
+(cd backend && make db-migrations)
 ```
 
 Frontend: http://localhost:8000
