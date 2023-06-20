@@ -18,6 +18,77 @@ Backend: http://localhost:8001
 
 DB: postgres://test_user:test_password@localhost:8004/postgres_dev
 
+# Deployment
+
+## Setup server
+
+```
+# Install dokku
+# wget -NP . https://dokku.com/bootstrap.sh
+# sudo DOKKU_TAG=v0.30.6 bash bootstrap.sh
+# dokku plugin:install https://github.com/dokku/dokku-postgres.git
+# dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+
+dokku apps:create micro-feeder-back
+dokku builder:set micro-feeder-back build-dir backend
+dokku config:set micro-feeder-back \
+  # Set the variables from backend/.env.example.prod
+
+dokku apps:create micro-feeder-front
+dokku builder:set micro-feeder-front build-dir frontend
+dokku config:set micro-feeder-front \
+  # Set the variables from frontend/.env.example.prod
+
+# Setup local database
+dokku postgres:create micro-feeder-db
+dokku postgres:link micro-feeder-db micro-feeder-back
+
+# Setup SSL certificate
+# Remember to open the 443 port
+
+dokku letsencrypt:set micro-feeder-front email test@mail.com
+dokku letsencrypt:enable micro-feeder-front
+
+dokku letsencrypt:set micro-feeder-back email test@mail.com
+dokku letsencrypt:enable micro-feeder-back
+
+dokku letsencrypt:cron-job --add
+
+# Setup domain
+dokku domains:set micro-feeder-front micro-feeder.example.com
+```
+
+## Deploy and push changes
+
+```
+git remote add server-backend dokku@example.com:micro-feeder-back
+git remote add server-frontend dokku@example.com:micro-feeder-front
+
+git push server-backend
+git push server-frontend
+```
+
+# Production debugging
+
+## Enter to the container
+
+```
+dokku enter micro-feeder-back web /bin/sh
+```
+
+## Show logs
+
+```
+dokku logs micro-feeder-back
+```
+
+## Open a psql terminal
+
+```
+dokku postgres:connect micro-feeder-db
+```
+
 ### Todo
 
 - [ ] Add deployment script
+- [ ] Add kubernetes deployment
