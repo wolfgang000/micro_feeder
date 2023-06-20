@@ -25,5 +25,5 @@ async def create_subscription(
 ) -> models.Subscription:
     async with uow:
         subscription = await uow.subscription_repo.create(models.Subscription(**value))
-        uow.commit()
+        await uow.commit()
         return subscription
