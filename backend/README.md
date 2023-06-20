@@ -21,3 +21,15 @@ make format
 ```
 make type-check
 ```
+
+- Run tests
+
+```
+make pytest
+```
+
+- Run migrations
+
+```
+make db-migrations
+```

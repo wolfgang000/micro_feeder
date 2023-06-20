@@ -1,4 +1,4 @@
-from backend.core import unit_of_work
+from backend.core import unit_of_work, models
 from result import Ok, Err, Result
 from sqlalchemy.sql import text
 
@@ -18,3 +18,12 @@ async def get_db_health_status(uow: unit_of_work.SqlAlchemyUnitOfWork) -> Result
     except Exception as err:
         print(f"Unexpected {err=}, {type(err)=}")
         return Err(err)
+
+
+async def create_subscription(
+    uow: unit_of_work.SqlAlchemyUnitOfWork, value
+) -> models.Subscription:
+    async with uow:
+        subscription = await uow.subscription_repo.create(models.Subscription(**value))
+        await uow.commit()
+        return subscription

@@ -1,6 +1,11 @@
 from __future__ import annotations
 import os
 
+database_url_env_name = "DATABASE_URL"
+
+if os.environ.get("ENV_TEST"):
+    database_url_env_name = "TEST_DATABASE_URL"
+
 
 def get_env_or_raise_exception(env_var_name: str) -> str:
     env_var = os.getenv(env_var_name)
@@ -10,5 +15,5 @@ def get_env_or_raise_exception(env_var_name: str) -> str:
 
 
 class Config:
-    DATABASE_URL = get_env_or_raise_exception("DATABASE_URL")
+    DATABASE_URL = get_env_or_raise_exception(database_url_env_name)
     DB_POOL_SIZE = int(get_env_or_raise_exception("DB_POOL_SIZE"))
