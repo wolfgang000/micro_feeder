@@ -35,7 +35,7 @@ dokku config:set micro-feeder-back \
   # Set the variables from backend/.env.example.prod
 
 dokku apps:create micro-feeder-front
-dokku builder:set micro-feeder-back build-dir frontend
+dokku builder:set micro-feeder-front build-dir frontend
 dokku config:set micro-feeder-front \
   # Set the variables from frontend/.env.example.prod
 
