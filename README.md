@@ -54,6 +54,16 @@ dokku letsencrypt:cron-job --add
 dokku domains:set micro-feeder-front micro-feeder.example.com
 ```
 
+## Deploy and push changes
+
+```
+git remote add server-backend dokku@example.com:micro-feeder-back
+git remote add server-frontend dokku@example.com:micro-feeder-front
+
+git push server-backend
+git push server-frontend
+```
+
 ### Todo
 
 - [ ] Add deployment script
