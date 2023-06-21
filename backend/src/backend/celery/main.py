@@ -1,9 +1,10 @@
 from celery import Celery
+from backend.config import Config
 
 app = Celery(
     "proj",
-    broker="pyamqp://guest@message_broker_dev//",
-    backend="redis://message_broker_store_dev",
+    broker=Config.RABBITMQ_URL,
+    backend=Config.REDIS_URL,
     include=["backend.celery.tasks"],
 )
 

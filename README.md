@@ -32,6 +32,8 @@ Message Broker Store(Redis): localhost:8006
 # sudo DOKKU_TAG=v0.30.6 bash bootstrap.sh
 # dokku plugin:install https://github.com/dokku/dokku-postgres.git
 # dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
+# dokku plugin:install https://github.com/dokku/dokku-redis.git
+# dokku plugin:install https://github.com/dokku/dokku-rabbitmq.git
 
 dokku apps:create micro-feeder-back
 dokku builder:set micro-feeder-back build-dir backend
@@ -43,9 +45,17 @@ dokku builder:set micro-feeder-front build-dir frontend
 dokku config:set micro-feeder-front \
   # Set the variables from frontend/.env.example.prod
 
-# Setup local database
+# Setup database
 dokku postgres:create micro-feeder-db
 dokku postgres:link micro-feeder-db micro-feeder-back
+
+# Setup redis
+dokku redis:create micro-feeder-redis
+dokku redis:link micro-feeder-redis micro-feeder-back
+
+# Setup rabbitmq
+dokku rabbitmq:create micro-feeder-rabbitmq
+dokku rabbitmq:link micro-feeder-rabbitmq micro-feeder-back
 
 # Setup SSL certificate
 # Remember to open the 443 port
