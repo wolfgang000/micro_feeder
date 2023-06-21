@@ -16,7 +16,11 @@ Frontend: http://localhost:8000
 
 Backend: http://localhost:8001
 
-DB: postgres://test_user:test_password@localhost:8004/postgres_dev
+DB(Postgres): postgres://test_user:test_password@localhost:8004/postgres_dev
+
+Message Broker(Rabbitmq): localhost:8005
+
+Message Broker Store(Redis): localhost:8006
 
 # Deployment
 

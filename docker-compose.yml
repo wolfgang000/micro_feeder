@@ -36,6 +36,16 @@ services:
       retries: 30
       start_period: 15s
 
+  message_broker_dev:
+    image: "rabbitmq:3.12.0-alpine"
+    ports:
+      - 8005:5672
+
+  message_broker_store_dev:
+    image: "redis:7.0.11-alpine"
+    ports:
+      - 8006:6379
+
   frontend:
     build:
       context: frontend
