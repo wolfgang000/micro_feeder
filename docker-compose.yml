@@ -19,6 +19,26 @@ services:
       retries: 5
       start_period: 15s
 
+  celery_worker:
+    build:
+      context: backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ././backend:/home/user/app/
+    command: >
+      sh -c "pip install -e . &&
+             celery -A backend.celery.main worker -l INFO"
+
+  celery_beat:
+    build:
+      context: backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ././backend:/home/user/app/
+    command: >
+      sh -c "pip install -e . &&
+             celery -A backend.celery.main beat"
+
   db_dev:
     image: "postgres:10.15-alpine"
     environment:
@@ -45,6 +65,8 @@ services:
     image: "redis:7.0.11-alpine"
     ports:
       - 8006:6379
+
+
 
   frontend:
     build:
