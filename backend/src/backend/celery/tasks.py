@@ -1,25 +1,8 @@
 from .main import app
+import asyncio
 from celery.schedules import crontab
-
-
-@app.on_after_configure.connect
-def setup_periodic_tasks(sender, **kwargs):
-    # Calls test('hello') every 10 seconds.
-    sender.add_periodic_task(10.0, test.s("hello"), name="add every 10")
-
-    # Calls test('hello') every 30 seconds.
-    # It uses the same signature of previous task, an explicit name is
-    # defined to avoid this task replacing the previous one defined.
-    sender.add_periodic_task(30.0, test.s("hello"), name="add every 30")
-
-    # Calls test('world') every 30 seconds
-    sender.add_periodic_task(30.0, test.s("world"), expires=10)
-
-    # Executes every Monday morning at 7:30 a.m.
-    sender.add_periodic_task(
-        crontab(hour=7, minute=30, day_of_week=1),
-        test.s("Happy Mondays!"),
-    )
+from backend.core import unit_of_work, services
+import feedparser
 
 
 @app.task
@@ -40,5 +23,30 @@ def mul(x, y):
 
 
 @app.task
-def xsum(numbers):
-    return sum(numbers)
+def fetch_feed_and_call_webhook(
+    subscription_id, feed_url, feed_last_entry_id, webhook_url
+):
+    feed = feedparser.parse(feed_url)
+
+
+@app.task
+def schedule_fetch_feeds():
+    loop = asyncio.get_event_loop()
+    result = loop.run_until_complete(get_suscription_list())
+    for (item,) in result:
+        fetch_feed_and_call_webhook.delay(
+            item.id, item.feed_url, item.feed_last_entry_id, item.webhook_url
+        )
+
+
+async def foo():
+    uow = unit_of_work.SqlAlchemyUnitOfWork()
+    result = await services.get_db_health_status(uow)
+    return result
+
+
+async def get_suscription_list():
+    uow = unit_of_work.SqlAlchemyUnitOfWork()
+    async with uow:
+        result = await uow.subscription_repo.list()
+        return list(result)

@@ -8,16 +8,10 @@ app = Celery(
     include=["backend.celery.tasks"],
 )
 
-# Optional configuration, see the application user guide.
-app.conf.update(
-    result_expires=3600,
-)
-
 app.conf.beat_schedule = {
     "add-every-30-seconds": {
-        "task": "backend.celery.tasks.add",
-        "schedule": 30.0,
-        "args": (16, 16),
+        "task": "backend.celery.tasks.schedule_fetch_feeds",
+        "schedule": 60.0,
     },
 }
 

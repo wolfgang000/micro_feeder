@@ -1,6 +1,8 @@
 from __future__ import annotations
 import asyncio
 from datetime import datetime, timezone
+from typing import Dict, Any
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -14,9 +16,27 @@ class SubscriptionRepository:
 
     async def create(self, subscription: models.Subscription) -> models.Subscription:
         subscription.inserted_at = datetime.utcnow()
+        subscription.updated_at = datetime.utcnow()
         self.session.add(subscription)
         await self.session.flush()
         return subscription
+
+    async def update(self, subscription: models.Subscription) -> models.Subscription:
+        subscription.updated_at = datetime.utcnow()
+        self.session.add(subscription)
+        await self.session.flush()
+        return subscription
+
+    async def update_by_id(self, id: int, values: Dict[str, Any]):
+        values["updated_at"] = datetime.utcnow()
+        await self.session.execute(
+            update(models.Subscription)
+            .where(models.Subscription.id == id)
+            .values(values)
+        )
+
+    async def list(self):
+        return await self.session.execute(select(models.Subscription))
 
 
 class SqlAlchemyUnitOfWork:

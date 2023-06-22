@@ -14,6 +14,8 @@ class Subscription(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     webhook_url: Mapped[str]
     feed_url: Mapped[str]
+    feed_last_entry_id: Mapped[str]
+    updated_at: Mapped[datetime.datetime]
     inserted_at: Mapped[datetime.datetime]
 
     def __init__(self, webhook_url: str, feed_url: str):
