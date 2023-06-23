@@ -1,6 +1,6 @@
 import uuid
 from result import Ok, Err, Result
-from httpx import AsyncClient
+from httpx import AsyncClient, ConnectTimeout
 import aiofiles
 
 # HTTP "Accept" header to send to servers when downloading feeds.
@@ -18,14 +18,19 @@ ACCEPT_HEADER: str = (
 
 async def download_feed_file(feed_url: str) -> Result[str, str]:
     async with AsyncClient() as client:
-        result = await client.get(
-            feed_url,
-            headers={"Accept": ACCEPT_HEADER},
-        )
-        if result.status_code == 200:
-            temp_file_name = f"/tmp/{uuid.uuid4()}"
-            async with aiofiles.open(temp_file_name, mode="wb") as f:
-                await f.write(result.content)
+        try:
+            result = await client.get(
+                feed_url,
+                headers={"Accept": ACCEPT_HEADER},
+            )
+            if result.status_code == 200:
+                temp_file_name = f"/tmp/{uuid.uuid4()}"
+                async with aiofiles.open(temp_file_name, mode="wb") as f:
+                    await f.write(result.content)
                 return Ok(temp_file_name)
-        else:
+            else:
+                return Err("we couldn't find the file")
+        except ConnectTimeout:
             return Err("we couldn't find the file")
+        except Exception as err:
+            return Err("general error")
