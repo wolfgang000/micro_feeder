@@ -29,7 +29,7 @@ Message Broker Store(Redis): localhost:8006
 ```
 # Install dokku
 # wget -NP . https://dokku.com/bootstrap.sh
-# sudo DOKKU_TAG=v0.30.6 bash bootstrap.sh
+# sudo DOKKU_TAG=v0.30.7 bash bootstrap.sh
 # dokku plugin:install https://github.com/dokku/dokku-postgres.git
 # dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
 # dokku plugin:install https://github.com/dokku/dokku-redis.git

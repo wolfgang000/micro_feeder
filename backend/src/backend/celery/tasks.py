@@ -27,6 +27,13 @@ def fetch_feed_and_call_webhook(
     subscription_id, feed_url, feed_last_entry_id, webhook_url
 ):
     feed = feedparser.parse(feed_url)
+    # print(feed.entries)
+    new_feed_last_entry_id = feed.entries[0].id
+    if new_feed_last_entry_id != feed_last_entry_id:
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(
+            update_feed_last_entry_id(subscription_id, new_feed_last_entry_id)
+        )
 
 
 @app.task
@@ -50,3 +57,12 @@ async def get_suscription_list():
     async with uow:
         result = await uow.subscription_repo.list()
         return list(result)
+
+
+async def update_feed_last_entry_id(id, feed_last_entry_id):
+    uow = unit_of_work.SqlAlchemyUnitOfWork()
+    async with uow:
+        await uow.subscription_repo.update_by_id(
+            id, {"feed_last_entry_id": feed_last_entry_id}
+        )
+        await uow.commit()
