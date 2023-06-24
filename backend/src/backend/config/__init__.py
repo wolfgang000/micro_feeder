@@ -16,4 +16,6 @@ def get_env_or_raise_exception(env_var_name: str) -> str:
 
 class Config:
     DATABASE_URL = get_env_or_raise_exception(database_url_env_name)
+    RABBITMQ_URL = get_env_or_raise_exception("RABBITMQ_URL")
+    REDIS_URL = get_env_or_raise_exception("REDIS_URL")
     DB_POOL_SIZE = int(os.getenv("DB_POOL_SIZE", "10"))

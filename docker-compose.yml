@@ -11,13 +11,44 @@ services:
     environment:
       DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_dev
       TEST_DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_test
-      DB_POOL_SIZE: 10
+      REDIS_URL: redis://message_broker_store_dev
+      RABBITMQ_URL: pyamqp://guest@message_broker_dev//
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 15s
+
+  celery_worker:
+    build:
+      context: backend
+      dockerfile: Dockerfile.dev
+    environment:
+      DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_dev
+      TEST_DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_test
+      REDIS_URL: redis://message_broker_store_dev
+      RABBITMQ_URL: pyamqp://guest@message_broker_dev//
+    volumes:
+      - ././backend:/home/user/app/
+    command: >
+      sh -c "pip install -e . &&
+             celery -A backend.celery.main worker -l INFO"
+
+  celery_beat:
+    build:
+      context: backend
+      dockerfile: Dockerfile.dev
+    environment:
+      DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_dev
+      TEST_DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_test
+      REDIS_URL: redis://message_broker_store_dev
+      RABBITMQ_URL: pyamqp://guest@message_broker_dev//
+    volumes:
+      - ././backend:/home/user/app/
+    command: >
+      sh -c "pip install -e . &&
+             celery -A backend.celery.main beat"
 
   db_dev:
     image: "postgres:10.15-alpine"
@@ -35,6 +66,18 @@ services:
       timeout: 3s
       retries: 30
       start_period: 15s
+
+  message_broker_dev:
+    image: "rabbitmq:3.12.0-alpine"
+    ports:
+      - 8005:5672
+
+  message_broker_store_dev:
+    image: "redis:7.0.11-alpine"
+    ports:
+      - 8006:6379
+
+
 
   frontend:
     build:

@@ -1,1 +1,4 @@
+web: /app/entrypoint.sh
+worker: celery -A backend.celery.main worker -l INFO
+beat: celery -A backend.celery.main beat
 release: alembic upgrade head
