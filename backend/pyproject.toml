@@ -27,6 +27,7 @@ pytest = "^7.3.2"
 black = "^23.3.0"
 mypy = "^1.3.0"
 anyio = {extras = ["trio"], version = "^3.7.0"}
+types-aiofiles = "^23.1.0.4"
 
 [build-system]
 requires = ["poetry-core"]

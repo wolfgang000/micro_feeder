@@ -1310,6 +1310,17 @@ sniffio = "*"
 sortedcontainers = "*"
 
 [[package]]
+name = "types-aiofiles"
+version = "23.1.0.4"
+description = "Typing stubs for aiofiles"
+optional = false
+python-versions = "*"
+files = [
+    {file = "types-aiofiles-23.1.0.4.tar.gz", hash = "sha256:89a58cd0ae93b37a22c323c22d250bd65dde6833f6c6f3c1824784e56f47109f"},
+    {file = "types_aiofiles-23.1.0.4-py3-none-any.whl", hash = "sha256:65a862f0d36e6b8e1b2df601ba7aeeb2eba8e2f9764ba9d0989bdd498ed8c857"},
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.6.3"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -1538,4 +1549,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "941cccfb92f8544ed49d3c79fa4a5ad663db2c08c4d6fe54f858855ba5d65df4"
+content-hash = "99ca9a688e248b46c3d16fcd07ab17558313a3e3284e86aa4888e7347760adad"
