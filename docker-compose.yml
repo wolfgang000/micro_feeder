@@ -13,6 +13,8 @@ services:
       TEST_DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_test
       REDIS_URL: redis://message_broker_store_dev
       RABBITMQ_URL: pyamqp://guest@message_broker_dev//
+    env_file:
+      - backend/.env.local.dev
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
       interval: 10s

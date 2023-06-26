@@ -24,3 +24,18 @@ class Subscription(Base):
 
     def __repr__(self) -> str:
         return f"Subscription(id={self.id!r}, webhook_url={self.webhook_url!r}, feed_url={self.feed_url!r})"
+
+
+class User(Base):
+    __tablename__ = "app_user"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    email: Mapped[str]
+    updated_at: Mapped[datetime.datetime]
+    inserted_at: Mapped[datetime.datetime]
+
+    def __init__(self, email: str):
+        self.email = email
+
+    def __repr__(self) -> str:
+        return f"User(id={self.id!r}, email={self.email!r})"
