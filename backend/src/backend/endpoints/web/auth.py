@@ -1,4 +1,6 @@
 from backend.config import Config
+from backend.core import unit_of_work
+from backend.core.services import create_user
 from fastapi import APIRouter
 from oauthlib.oauth2 import WebApplicationClient
 from fastapi.responses import RedirectResponse
@@ -79,13 +81,22 @@ async def login():
 
 @router.get("/web/auth/callback")
 async def callback(code: str):
+    uow = unit_of_work.SqlAlchemyUnitOfWork()
+
     fetch_token_result = await client.fetch_token(code)
     if isinstance(fetch_token_result, Ok):
         access_token = fetch_token_result.value["access_token"]
         account_info_result = await get_account_info(access_token)
         if isinstance(account_info_result, Ok):
             user_email = account_info_result.value["email"]
-            return user_email
+            async with uow:
+                get_user_by_email_result = await uow.user_repo.get_by_email(user_email)
+
+            if isinstance(get_user_by_email_result, Ok):
+                return "ok"
+            else:
+                await create_user(uow, {"email": user_email})
+                return "ok"
         else:
             pass
     else:

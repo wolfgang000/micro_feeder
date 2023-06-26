@@ -2,10 +2,12 @@ from __future__ import annotations
 import asyncio
 from datetime import datetime, timezone
 from typing import Dict, Any
+from result import Err, Ok, Result
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm.exc import NoResultFound
 from backend.config import Config
 from backend.core import models
 
@@ -39,6 +41,40 @@ class SubscriptionRepository:
         return await self.session.execute(select(models.Subscription))
 
 
+class UserRepository:
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def create(self, user: models.User) -> models.User:
+        user.inserted_at = datetime.utcnow()
+        user.updated_at = datetime.utcnow()
+        self.session.add(user)
+        await self.session.flush()
+        return user
+
+    async def update(self, user: models.User) -> models.User:
+        user.updated_at = datetime.utcnow()
+        self.session.add(user)
+        await self.session.flush()
+        return user
+
+    async def update_by_id(self, id: int, values: Dict[str, Any]):
+        values["updated_at"] = datetime.utcnow()
+        await self.session.execute(
+            update(models.User).where(models.User.id == id).values(values)
+        )
+
+    async def get_by_email(self, email: str) -> Result[models.User, str]:
+        query = select(models.User).where(models.User.email == email)
+        result = await self.session.execute(query)
+        try:
+            (user,) = result.one()
+            return Ok(user)
+
+        except NoResultFound:
+            return Err("NoResultFound")
+
+
 class SqlAlchemyUnitOfWork:
     ENGINE = create_async_engine(
         Config.DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1),
@@ -55,6 +91,7 @@ class SqlAlchemyUnitOfWork:
     async def __aenter__(self):
         self.session = self.session_factory()
         self.subscription_repo = SubscriptionRepository(self.session)
+        self.user_repo = UserRepository(self.session)
         return self
 
     async def __aexit__(self, *args):

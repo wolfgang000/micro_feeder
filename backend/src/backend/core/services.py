@@ -21,9 +21,20 @@ async def get_db_health_status(uow: unit_of_work.SqlAlchemyUnitOfWork) -> Result
 
 
 async def create_subscription(
-    uow: unit_of_work.SqlAlchemyUnitOfWork, value
+    uow: unit_of_work.SqlAlchemyUnitOfWork, subscription_params: dict
 ) -> models.Subscription:
     async with uow:
-        subscription = await uow.subscription_repo.create(models.Subscription(**value))
+        subscription = await uow.subscription_repo.create(
+            models.Subscription(**subscription_params)
+        )
         await uow.commit()
         return subscription
+
+
+async def create_user(
+    uow: unit_of_work.SqlAlchemyUnitOfWork, user_params: dict
+) -> models.User:
+    async with uow:
+        user = await uow.user_repo.create(models.User(**user_params))
+        await uow.commit()
+        return user
