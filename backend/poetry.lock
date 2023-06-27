@@ -615,6 +615,17 @@ files = [
 ]
 
 [[package]]
+name = "itsdangerous"
+version = "2.1.2"
+description = "Safely pass data to untrusted environments and back."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "itsdangerous-2.1.2-py3-none-any.whl", hash = "sha256:2c2349112351b88699d8d4b6b075022c0808887cb7ad10069318a8b0bc88db44"},
+    {file = "itsdangerous-2.1.2.tar.gz", hash = "sha256:5dbbc68b317e5e42f327f9021763545dc3fc3bfe22e6deb96aaf1fc38874156a"},
+]
+
+[[package]]
 name = "kombu"
 version = "5.3.1"
 description = "Messaging library for Python."
@@ -1565,4 +1576,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "7fbdb49e621578ee46ee576eacdc49916ae4b668171750924795a4fb3eaaaa46"
+content-hash = "70e4fc88eda8ab2474eec85bac2e1d492b5db312a05c37b15fa3017f32e64828"

@@ -1,7 +1,7 @@
 from backend.config import Config
 from backend.core import unit_of_work
 from backend.core.services import create_user
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from oauthlib.oauth2 import WebApplicationClient
 from fastapi.responses import RedirectResponse
 from httpx import AsyncClient
@@ -73,31 +73,47 @@ async def get_account_info(access_token) -> Result[dict, str]:
 
 
 @router.get("/web/auth/login")
-async def login():
-    # validate if they are already auth
-    authorize_url = client.get_authorization_url()
-    return RedirectResponse(authorize_url)
+async def login(request: Request):
+    user_id = request.session.get("user_id")
+    redirect_url = (
+        f"{Config.FRONTEND_URL}/dashboard"
+        if user_id
+        else client.get_authorization_url()
+    )
+    return RedirectResponse(redirect_url)
 
 
 @router.get("/web/auth/callback")
-async def callback(code: str):
+async def callback(request: Request, code: str):
     uow = unit_of_work.SqlAlchemyUnitOfWork()
-
     fetch_token_result = await client.fetch_token(code)
+
     if isinstance(fetch_token_result, Ok):
         access_token = fetch_token_result.value["access_token"]
         account_info_result = await get_account_info(access_token)
         if isinstance(account_info_result, Ok):
             user_email = account_info_result.value["email"]
+
             async with uow:
                 get_user_by_email_result = await uow.user_repo.get_by_email(user_email)
 
             if isinstance(get_user_by_email_result, Ok):
+                user = get_user_by_email_result.value
+                request.session.update({"user_id": user.id})
+
                 return "ok"
             else:
-                await create_user(uow, {"email": user_email})
+                user = await create_user(uow, {"email": user_email})
+                request.session.update({"user_id": user.id})
+
                 return "ok"
         else:
             pass
     else:
         pass
+
+
+@router.post("/web/auth/logout")
+async def logout(request: Request):
+    request.session.clear()
+    return "ok"
