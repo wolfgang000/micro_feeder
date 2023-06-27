@@ -1,5 +1,5 @@
 from backend.config import Config
-from backend.core import unit_of_work
+from backend.core import models, unit_of_work
 from backend.core.services import create_user
 from fastapi import APIRouter, Request
 from oauthlib.oauth2 import WebApplicationClient
@@ -72,6 +72,18 @@ async def get_account_info(access_token) -> Result[dict, str]:
             return Err(result.text)
 
 
+async def get_or_create_user(uow, user_email) -> models.User:
+    async with uow:
+        get_user_by_email_result = await uow.user_repo.get_by_email(user_email)
+
+    if isinstance(get_user_by_email_result, Ok):
+        user = get_user_by_email_result.value
+        return user
+    else:
+        user = await create_user(uow, {"email": user_email})
+        return user
+
+
 @router.get("/web/auth/login")
 async def login(request: Request):
     user_id = request.session.get("user_id")
@@ -87,30 +99,22 @@ async def login(request: Request):
 async def callback(request: Request, code: str):
     uow = unit_of_work.SqlAlchemyUnitOfWork()
     fetch_token_result = await client.fetch_token(code)
-
-    if isinstance(fetch_token_result, Ok):
-        access_token = fetch_token_result.value["access_token"]
-        account_info_result = await get_account_info(access_token)
-        if isinstance(account_info_result, Ok):
-            user_email = account_info_result.value["email"]
-
-            async with uow:
-                get_user_by_email_result = await uow.user_repo.get_by_email(user_email)
-
-            if isinstance(get_user_by_email_result, Ok):
-                user = get_user_by_email_result.value
-                request.session.update({"user_id": user.id})
-
-                return "ok"
-            else:
-                user = await create_user(uow, {"email": user_email})
-                request.session.update({"user_id": user.id})
-
-                return "ok"
-        else:
-            pass
-    else:
+    if isinstance(fetch_token_result, Err):
         pass
+
+    token = fetch_token_result.unwrap()
+    access_token = token["access_token"]
+    account_info_result = await get_account_info(access_token)
+    if isinstance(account_info_result, Err):
+        pass
+
+    account_info = account_info_result.unwrap()
+    user_email = account_info["email"]
+
+    user = await get_or_create_user(uow, user_email)
+    request.session.update({"user_id": user.id})
+
+    return RedirectResponse(f"{Config.FRONTEND_URL}/dashboard")
 
 
 @router.post("/web/auth/logout")
