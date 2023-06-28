@@ -24,6 +24,9 @@ env:
   TEST_DATABASE_URL: postgres://test_user:test_password@localhost:5432/postgres_test
   REDIS_URL: redis://localhost
   RABBITMQ_URL: redis://localhost
+  GOOGLE_CLIENT_ID: abc
+  GOOGLE_CLIENT_SECRET: abc
+  GOOGLE_REDIRECT_URI: abc
 
 jobs:
   build:
