@@ -27,6 +27,7 @@ env:
   GOOGLE_CLIENT_ID: abc
   GOOGLE_CLIENT_SECRET: abc
   GOOGLE_REDIRECT_URI: abc
+  FRONTEND_URL: http://localhost:8000
 
 jobs:
   build:
