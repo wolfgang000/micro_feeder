@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: touch backend/.env.local.dev
-      - run: echo -e "GOOGLE_CLIENT_ID=\nGOOGLE_CLIENT_SECRET=\nGOOGLE_REDIRECT_URI=\n" >> backend/.env.local.dev
+      - run: echo -e "GOOGLE_CLIENT_ID=abc\nGOOGLE_CLIENT_SECRET=abc\nGOOGLE_REDIRECT_URI=abc\n" >> backend/.env.local.dev
       - uses: isbang/compose-action@v1.3.2
       - uses: actions/setup-node@v3
         with:
