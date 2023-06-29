@@ -14,6 +14,11 @@ def get_env_or_raise_exception(env_var_name: str) -> str:
     raise Exception(f"Environment variable '{env_var_name}' could not be found")
 
 
+ENV = get_env_or_raise_exception("ENV")
+if ENV not in ["dev", "test", "prod"]:
+    raise Exception(f"Wrong 'ENV'")
+
+
 class Config:
     DATABASE_URL = get_env_or_raise_exception(database_url_env_name)
     RABBITMQ_URL = get_env_or_raise_exception("RABBITMQ_URL")
@@ -23,3 +28,4 @@ class Config:
     GOOGLE_CLIENT_SECRET = get_env_or_raise_exception("GOOGLE_CLIENT_SECRET")
     GOOGLE_REDIRECT_URI = get_env_or_raise_exception("GOOGLE_REDIRECT_URI")
     FRONTEND_URL = get_env_or_raise_exception("FRONTEND_URL")
+    ENV = ENV

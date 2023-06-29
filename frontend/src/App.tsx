@@ -1,6 +1,7 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import env from "./env";
 
 function App() {
   return (
@@ -11,12 +12,10 @@ function App() {
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+          id="loginWithGoogleButton"
+          href={`${env.backend_url}/web/auth/login`}
         >
-          Learn React
+          Sign in with Google
         </a>
       </header>
     </div>

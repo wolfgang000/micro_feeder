@@ -14,6 +14,7 @@ services:
       REDIS_URL: redis://message_broker_store_dev
       RABBITMQ_URL: pyamqp://guest@message_broker_dev//
       FRONTEND_URL: http://localhost:8000
+      ENV: dev
     env_file:
       - backend/.env.local.dev
     healthcheck:
@@ -96,6 +97,7 @@ services:
       - node_modules_cache_frontend:/home/node/app/node_modules
     environment:
       PORT: 8000
+      REACT_APP_BACKEND_URL: http://localhost:8001
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 30s
