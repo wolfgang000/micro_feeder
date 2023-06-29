@@ -23,10 +23,15 @@ jobs:
       ImageOS: ubuntu20
     steps:
       - uses: actions/checkout@v3
-      - run: ls
-      - run: touch ../backend/.env.local.dev
+      - name: Reset DB
+        run: (docker container rm micro_feeder-db_dev-1 && docker volume rm micro_feeder_pgdata_dev) || echo "OK"
+      - name: Create .env.local.dev
+        run: touch ../backend/.env.local.dev
       - run: echo -e "GOOGLE_CLIENT_ID=abc\nGOOGLE_CLIENT_SECRET=abc\nGOOGLE_REDIRECT_URI=abc\n" >> ../backend/.env.local.dev
-      - uses: isbang/compose-action@v1.3.2
+      - name: Start Docker compose
+        uses: isbang/compose-action@v1.3.2
+      - name: Migrate DB
+        run: (cd ../backend/ && make db-migrations)
       - uses: actions/setup-node@v3
         with:
           node-version: 18.16.0
