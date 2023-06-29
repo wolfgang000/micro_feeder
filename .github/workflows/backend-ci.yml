@@ -22,6 +22,7 @@ defaults:
 env:
   DATABASE_URL: postgres://test_user:test_password@localhost:5432/postgres_dev
   TEST_DATABASE_URL: postgres://test_user:test_password@localhost:5432/postgres_test
+  ENV: test
   REDIS_URL: redis://localhost
   RABBITMQ_URL: redis://localhost
   GOOGLE_CLIENT_ID: abc
