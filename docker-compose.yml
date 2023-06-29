@@ -108,6 +108,14 @@ services:
     ports:
       - 8000:8000
 
+  entrypoint:
+    image: "busybox:latest"
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+
 volumes:
   pgdata_dev:
   node_modules_cache_frontend:
