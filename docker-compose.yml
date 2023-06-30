@@ -37,7 +37,7 @@ services:
       - ././backend:/home/user/app/
     command: >
       sh -c "pip install -e . &&
-             celery -A backend.celery.main worker -l INFO"
+             celery -A backend.celery.main worker -l INFO -E"
 
   celery_beat:
     <<: *env
@@ -48,7 +48,7 @@ services:
       - ././backend:/home/user/app/
     command: >
       sh -c "pip install -e . &&
-             celery -A backend.celery.main beat"
+             celery -A backend.celery.main beat -E"
 
   db_dev:
     image: "postgres:10.15-alpine"
