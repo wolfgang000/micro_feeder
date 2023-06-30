@@ -5,6 +5,23 @@
 # Get started
 
 ```sh
+touch backend/.env.local.dev
+```
+
+You need to add the following env variables to the env file:
+
+```
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GOOGLE_REDIRECT_URI=http://localhost:8001/web/auth/callback
+```
+
+We need to generate the google oauth credentials to get the values for GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET
+
+- Follow [this](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred) google's tutorial to generate the authorization credentials
+- Add a new redirect URI "http://localhost:8001/web/auth/callback"
+
+```sh
 # Start the containers
 docker compose up
 
@@ -16,11 +33,11 @@ Frontend: http://localhost:8000
 
 Backend: http://localhost:8001
 
-DB(Postgres): postgres://test_user:test_password@localhost:8004/postgres_dev
+DB(Postgres): `postgres://test_user:test_password@localhost:8004/postgres_dev`
 
-Message Broker(Rabbitmq): localhost:8005
+Message Broker(Rabbitmq): `localhost:8005`
 
-Message Broker Store(Redis): localhost:8006
+Message Broker Store(Redis): `localhost:8006`
 
 # Deployment
 
@@ -88,6 +105,12 @@ git push server-frontend
 
 ```
 dokku enter micro-feeder-back web /bin/sh
+```
+
+## Open celery events
+
+```
+dokku enter micro-feeder-back web celery -A backend.celery.main events
 ```
 
 ## Show logs

@@ -164,3 +164,4 @@ test_data
 Untitled-1
 postman_collection.json
 test_data_.csv
+backend/.env.local.*

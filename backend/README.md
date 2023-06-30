@@ -33,3 +33,9 @@ make pytest
 ```sh
 make db-migrations
 ```
+
+### Create migration
+
+```sh
+alembic revision -m "create table"
+```

@@ -1,6 +1,19 @@
 version: "3.8"
+
+x-env: &env
+  environment:
+    DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_dev
+    REDIS_URL: redis://message_broker_store_dev
+    RABBITMQ_URL: pyamqp://guest@message_broker_dev//
+    FRONTEND_URL: http://localhost:8000
+    SECRET_KEY: super_secret
+    ENV: dev
+  env_file:
+    - backend/.env.local.dev
+
 services:
   backend:
+    <<: *env
     build:
       context: backend
       dockerfile: Dockerfile.dev
@@ -8,11 +21,6 @@ services:
       - ././backend:/home/user/app/
     ports:
       - 8001:8001
-    environment:
-      DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_dev
-      TEST_DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_test
-      REDIS_URL: redis://message_broker_store_dev
-      RABBITMQ_URL: pyamqp://guest@message_broker_dev//
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
       interval: 10s
@@ -21,34 +29,26 @@ services:
       start_period: 15s
 
   celery_worker:
+    <<: *env
     build:
       context: backend
       dockerfile: Dockerfile.dev
-    environment:
-      DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_dev
-      TEST_DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_test
-      REDIS_URL: redis://message_broker_store_dev
-      RABBITMQ_URL: pyamqp://guest@message_broker_dev//
     volumes:
       - ././backend:/home/user/app/
     command: >
       sh -c "pip install -e . &&
-             celery -A backend.celery.main worker -l INFO"
+             celery -A backend.celery.main worker -l INFO -E"
 
   celery_beat:
+    <<: *env
     build:
       context: backend
       dockerfile: Dockerfile.dev
-    environment:
-      DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_dev
-      TEST_DATABASE_URL: postgres://test_user:test_password@db_dev:5432/postgres_test
-      REDIS_URL: redis://message_broker_store_dev
-      RABBITMQ_URL: pyamqp://guest@message_broker_dev//
     volumes:
       - ././backend:/home/user/app/
     command: >
       sh -c "pip install -e . &&
-             celery -A backend.celery.main beat"
+             celery -A backend.celery.main beat -E"
 
   db_dev:
     image: "postgres:10.15-alpine"
@@ -77,8 +77,6 @@ services:
     ports:
       - 8006:6379
 
-
-
   frontend:
     build:
       context: frontend
@@ -93,6 +91,7 @@ services:
       - node_modules_cache_frontend:/home/node/app/node_modules
     environment:
       PORT: 8000
+      REACT_APP_BACKEND_URL: http://localhost:8001
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 30s
@@ -102,6 +101,14 @@ services:
     command: /bin/sh -c "npm install && npm start"
     ports:
       - 8000:8000
+
+  entrypoint:
+    image: "busybox:latest"
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
 
 volumes:
   pgdata_dev:
