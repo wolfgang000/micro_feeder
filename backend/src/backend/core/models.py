@@ -1,4 +1,5 @@
 import datetime
+from sqlalchemy import UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -28,6 +29,7 @@ class Subscription(Base):
 
 class User(Base):
     __tablename__ = "app_user"
+    __table_args__ = (UniqueConstraint("email", name="app_user_email_index"),)
 
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str]
