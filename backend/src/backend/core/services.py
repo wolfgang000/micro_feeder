@@ -35,6 +35,7 @@ async def create_user(
     uow: unit_of_work.SqlAlchemyUnitOfWork, user_params: dict
 ) -> models.User:
     async with uow:
+        # TODO: handle unique constrain error
         user = await uow.user_repo.create(models.User(**user_params))
         await uow.commit()
         return user
