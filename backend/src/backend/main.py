@@ -6,7 +6,7 @@ from starlette.middleware.sessions import SessionMiddleware
 
 
 app = FastAPI()
-app.add_middleware(SessionMiddleware, secret_key="some-random-string")
+app.add_middleware(SessionMiddleware, secret_key=Config.SECRET_KEY)
 app.include_router(healtcheck.router)
 app.include_router(subscription.router)
 app.include_router(auth.router)

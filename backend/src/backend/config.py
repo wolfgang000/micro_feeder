@@ -29,4 +29,5 @@ class Config:
     GOOGLE_CLIENT_SECRET = get_env_or_raise_exception("GOOGLE_CLIENT_SECRET")
     GOOGLE_REDIRECT_URI = get_env_or_raise_exception("GOOGLE_REDIRECT_URI")
     FRONTEND_URL = get_env_or_raise_exception("FRONTEND_URL")
+    SECRET_KEY = get_env_or_raise_exception("SECRET_KEY")
     ENV = ENV

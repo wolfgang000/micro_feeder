@@ -6,6 +6,7 @@ x-env: &env
     REDIS_URL: redis://message_broker_store_dev
     RABBITMQ_URL: pyamqp://guest@message_broker_dev//
     FRONTEND_URL: http://localhost:8000
+    SECRET_KEY: super_secret
     ENV: dev
   env_file:
     - backend/.env.local.dev
