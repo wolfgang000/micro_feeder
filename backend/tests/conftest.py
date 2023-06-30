@@ -8,10 +8,10 @@ def setup_db():
         conn.autocommit = True
         with conn.cursor() as cursor:
             try:
-                cursor.execute("DROP DATABASE %s  ;" % "postgres_test")
+                cursor.execute("DROP DATABASE %s  ;" % "postgres_dev_test")
             except Exception as e:
                 pass
-            cursor.execute("CREATE DATABASE %s  ;" % "postgres_test")
+            cursor.execute("CREATE DATABASE %s  ;" % "postgres_dev_test")
     alembicArgs = [
         "--raiseerr",
         "upgrade",
