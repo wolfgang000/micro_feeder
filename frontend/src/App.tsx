@@ -12,6 +12,7 @@ function App() {
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
         <a
+          className="btn-google"
           id="loginWithGoogleButton"
           href={`${env.backend_url}/web/auth/login`}
         >
