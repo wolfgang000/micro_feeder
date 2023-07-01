@@ -1,6 +1,8 @@
 from backend.core import unit_of_work, models
 from result import Ok, Err, Result
 from sqlalchemy.sql import text
+from typing import Any
+
 
 # TODO: Add proper loggers and better error messages
 
@@ -11,7 +13,7 @@ async def get_db_health_status(uow: unit_of_work.SqlAlchemyUnitOfWork) -> Result
             result = await uow.session.execute(text("SELECT 1"))
             match list(result):
                 case [(1,)]:
-                    return Ok()
+                    return Ok[Any](None)
                 case value:
                     print(f"Error, expected [(1,)] but got {value}")
                     return Err(value)
