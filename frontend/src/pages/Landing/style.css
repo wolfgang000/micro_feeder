@@ -1,0 +1,27 @@
+.btn-google {
+  border-radius: 3px !important;
+  font-family: "Roboto" !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  color: #333333 !important;
+  border: 1px solid #bbb !important;
+}
+
+.google-logo-btn {
+  height: 3vmin;
+  padding-right: 18px;
+}
+
+.rss-logo-title {
+  height: 1.2em;
+  padding-right: 6px;
+  vertical-align: middle;
+}
+
+header.masthead {
+  position: relative;
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
