@@ -12,3 +12,16 @@
   height: 3vmin;
   padding-right: 18px;
 }
+
+.rss-logo-title {
+  height: 1.2em;
+  padding-right: 6px;
+  vertical-align: middle;
+}
+
+header.masthead {
+  position: relative;
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
