@@ -1,3 +1,10 @@
+<p align=center>
+  <img src="https://github.com/wolfgang000/micro_feeder/assets/4041136/5f641b5e-02ad-4d9c-801c-9dda41b3b16c"/>  
+</p>
+<p align=center>
+  Subscribe to RSS feeds and receive updates via webhooks.
+</p>
+
 [![Backend CI badge](https://github.com/wolfgang000/micro_feeder/actions/workflows/backend-ci.yml/badge.svg?branch=main)](https://github.com/wolfgang000/micro_feeder/actions/workflows/backend-ci.yml?query=branch%3Amain)
 [![Frontend CI badge](https://github.com/wolfgang000/micro_feeder/actions/workflows/frontend-ci.yml/badge.svg?branch=main)](https://github.com/wolfgang000/micro_feeder/actions/workflows/frontend-ci.yml?query=branch%3Amain)
 [![E2E CI badge](https://github.com/wolfgang000/micro_feeder/actions/workflows/e2e-ci.yml/badge.svg?branch=main)](https://github.com/wolfgang000/micro_feeder/actions/workflows/e2e-ci.yml?query=branch%3Amain)
@@ -16,9 +23,9 @@ GOOGLE_CLIENT_SECRET=
 GOOGLE_REDIRECT_URI=http://localhost:8001/web/auth/callback
 ```
 
-We need to generate the google oauth credentials to get the values for GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET
+We need to generate the Google OAuth credentials to get the values for GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET
 
-- Follow [this](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred) google's tutorial to generate the authorization credentials
+- Follow [this](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred) Google's tutorial to generate the authorization credentials
 - Add a new redirect URI "http://localhost:8001/web/auth/callback"
 
 ```sh
