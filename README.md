@@ -40,7 +40,7 @@ Frontend: http://localhost:8000
 
 Backend: http://localhost:8001
 
-Backend(Debugging mode): http://localhost:8080
+Backend(Debugging mode VS Code): http://localhost:8080
 
 DB(Postgres): `postgres://test_user:test_password@localhost:8004/postgres_dev`
 
