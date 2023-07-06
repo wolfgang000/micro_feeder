@@ -18,7 +18,7 @@
             "jinja": true,
             "justMyCode": true,
             "env": {
-                "ENV": "test",
+                "ENV": "dev",
                 "DATABASE_URL": "postgres://test_user:test_password@localhost:8004/postgres_dev",
                 "REDIS_URL": "redis://localhost:8006",
                 "RABBITMQ_URL": "pyamqp://guest@localhost:8006//",
