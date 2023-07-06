@@ -30,7 +30,7 @@ function Page() {
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label
-                htmlFor="exampleInputEmail1"
+                htmlFor="createSubscriptionFeedUrlField"
                 className="form-label form-text"
               >
                 Feed Url
@@ -38,7 +38,7 @@ function Page() {
               <input
                 type="text"
                 className="form-control"
-                id="exampleInputEmail1"
+                id="createSubscriptionFeedUrlField"
                 aria-describedby="emailHelp"
                 value={feedUrl}
                 onChange={(e) => setFeedUrl(e.target.value)}
@@ -47,7 +47,7 @@ function Page() {
             </div>
             <div className="mb-3">
               <label
-                htmlFor="exampleInputPassword1"
+                htmlFor="createSubscriptionWebhookUrlField"
                 className="form-label form-text"
               >
                 Webhook Url
@@ -55,14 +55,18 @@ function Page() {
               <input
                 type="text"
                 className="form-control"
-                id="exampleInputPassword1"
+                id="createSubscriptionWebhookUrlField"
                 value={webhookUrl}
                 onChange={(e) => setWebhookUrl(e.target.value)}
                 required
               />
             </div>
             <div className="text-end">
-              <button type="submit" className="btn btn-primary">
+              <button
+                id="createSubscriptionSubmitButton"
+                type="submit"
+                className="btn btn-primary"
+              >
                 Create
               </button>
             </div>
