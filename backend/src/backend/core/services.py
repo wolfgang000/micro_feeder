@@ -33,11 +33,11 @@ async def create_subscription(
         return subscription
 
 
-async def list_subscriptions(
-    uow: unit_of_work.SqlAlchemyUnitOfWork,
+async def list_subscriptions_by_user_id(
+    uow: unit_of_work.SqlAlchemyUnitOfWork, user_id: int
 ) -> list[models.Subscription]:
     async with uow:
-        result = await uow.subscription_repo.list()
+        result = await uow.subscription_repo.list_by_user_id(user_id)
         subscriptions = [r for (r,) in list(result)]
         return subscriptions
 

@@ -1,11 +1,11 @@
 import json
 from fastapi.testclient import TestClient
 from backend.main import app
-
-client = TestClient(app)
+from .helper import create_authenticated_client
 
 
 def test_create_subscription():
+    client = create_authenticated_client()
     response = client.post(
         "/web/subscriptions/",
         content=json.dumps(
@@ -22,6 +22,7 @@ def test_create_subscription():
 
 
 def test_try_create_subscription_with_invalid_data():
+    client = create_authenticated_client()
     response = client.post(
         "/web/subscriptions/",
         content=json.dumps(
@@ -38,10 +39,8 @@ def test_try_create_subscription_with_invalid_data():
 
 
 def test_list_subscription():
+    client = create_authenticated_client()
     response = client.get("/web/subscriptions/")
     assert response.status_code == 200
     response = response.json()
-    assert len(response) == 2
-    item = response[0]
-    assert item["id"] is not None
-    assert item["inserted_at"] is not None
+    assert response == []
