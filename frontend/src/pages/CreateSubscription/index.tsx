@@ -7,13 +7,37 @@ function Page() {
   const navigate = useNavigate();
   const [feedUrl, setFeedUrl] = useState("");
   const [webhookUrl, setWebhookUrl] = useState("");
+  const [feedUrlErrors, setFeedUrlErrors] = useState([] as string[]);
+  const [webhookUrlErrors, setWebhookUrlErrors] = useState([] as string[]);
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
+    setFeedUrlErrors((old) => {
+      old.length = 0;
+      return old;
+    });
+
+    setWebhookUrlErrors((old) => {
+      old.length = 0;
+      return old;
+    });
+
     const payload = {
       feed_url: feedUrl,
       webhook_url: webhookUrl,
+    };
+
+    const handleFailedRequest = (failedRequest: {
+      response: { data: any };
+    }) => {
+      const response = failedRequest.response.data;
+      if (response.detail.feed_url) {
+        setFeedUrlErrors((old) => [...old, ...response.detail.feed_url]);
+      }
+      if (response.detail.webhook_url) {
+        setWebhookUrlErrors((old) => [...old, ...response.detail.webhook_url]);
+      }
     };
 
     core
@@ -21,9 +45,7 @@ function Page() {
       .then(() => {
         navigate("/subscriptions");
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(handleFailedRequest);
   };
 
   return (
@@ -41,13 +63,24 @@ function Page() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${
+                  feedUrlErrors.length !== 0 ? "is-invalid" : ""
+                }`}
                 id="createSubscriptionFeedUrlField"
                 aria-describedby="emailHelp"
                 value={feedUrl}
                 onChange={(e) => setFeedUrl(e.target.value)}
                 required
               />
+              {feedUrlErrors.map((error, index) => (
+                <div
+                  data-testid="feedUrlFieldError"
+                  className="invalid-feedback"
+                  key={index}
+                >
+                  {error}
+                </div>
+              ))}
             </div>
             <div className="mb-3">
               <label
@@ -58,12 +91,23 @@ function Page() {
               </label>
               <input
                 type="text"
-                className="form-control"
+                className={`form-control ${
+                  webhookUrlErrors.length !== 0 ? "is-invalid" : ""
+                }`}
                 id="createSubscriptionWebhookUrlField"
                 value={webhookUrl}
                 onChange={(e) => setWebhookUrl(e.target.value)}
                 required
               />
+              {webhookUrlErrors.map((error, index) => (
+                <div
+                  data-testid="webhookUrlFieldError"
+                  className="invalid-feedback"
+                  key={index}
+                >
+                  {error}
+                </div>
+              ))}
             </div>
             <div className="text-end">
               <Link
