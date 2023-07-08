@@ -23,7 +23,7 @@ GOOGLE_CLIENT_SECRET=
 GOOGLE_REDIRECT_URI=http://localhost:8001/web/auth/callback
 ```
 
-We need to generate the Google OAuth credentials to get the values for GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET
+We need to generate the Google OAuth credentials to get the values for `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`
 
 - Follow [this](https://developers.google.com/identity/protocols/oauth2/web-server#creatingcred) Google's tutorial to generate the authorization credentials
 - Add a new redirect URI "http://localhost:8001/web/auth/callback"
