@@ -1,8 +1,10 @@
 import { useState } from "react";
 import "./style.css";
 import { core } from "../../api";
+import { useNavigate } from "react-router-dom";
 
 function Page() {
+  const navigate = useNavigate();
   const [feedUrl, setFeedUrl] = useState("");
   const [webhookUrl, setWebhookUrl] = useState("");
 
@@ -16,7 +18,9 @@ function Page() {
 
     core
       .createSubscription(payload)
-      .then(() => {})
+      .then(() => {
+        navigate("/subscriptions");
+      })
       .catch((error) => {
         console.log(error);
       });
