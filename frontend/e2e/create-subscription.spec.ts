@@ -18,3 +18,17 @@ test("Create subscription with valid data", async ({ page }) => {
   await expect(page.locator("body")).toContainText(feedUrl);
   await expect(page.locator("body")).toContainText(webhookUrl);
 });
+
+test("Cancel button should redirect to list subscriptions page", async ({
+  page,
+}) => {
+  await createUserAndLogin(page);
+  const createSubscriptionPage = new CreateSubscriptionPage(page);
+  const listSubscriptionsPage = new ListSubscriptionsPage(page);
+
+  await createSubscriptionPage.goto();
+  await createSubscriptionPage.validateCurrentUrl();
+  await createSubscriptionPage.cancelButton.click();
+
+  await listSubscriptionsPage.validateCurrentUrl();
+});

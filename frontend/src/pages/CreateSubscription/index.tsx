@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./style.css";
 import { core } from "../../api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Page() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ function Page() {
   };
 
   return (
-    <div className="container">
+    <div className="container pt-4 create-subscription-container">
       <div className="card">
         <h5 className="card-header">Create a New Subscription</h5>
         <div className="card-body">
@@ -66,6 +66,15 @@ function Page() {
               />
             </div>
             <div className="text-end">
+              <Link
+                id="createSubscriptionCancelButton"
+                type="button"
+                className="btn btn-secondary me-2"
+                to=".."
+                relative="path"
+              >
+                Cancel
+              </Link>
               <button
                 id="createSubscriptionSubmitButton"
                 type="submit"

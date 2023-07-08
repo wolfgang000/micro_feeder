@@ -5,12 +5,14 @@ export class CreateSubscriptionPage {
   readonly pagePath = "/subscriptions/add";
   readonly feedUrlField: Locator;
   readonly webhookUrlField: Locator;
+  readonly cancelButton: Locator;
   readonly submitButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.feedUrlField = page.locator("#createSubscriptionFeedUrlField");
     this.webhookUrlField = page.locator("#createSubscriptionWebhookUrlField");
+    this.cancelButton = page.locator("#createSubscriptionCancelButton");
     this.submitButton = page.locator("#createSubscriptionSubmitButton");
   }
 
