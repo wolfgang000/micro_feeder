@@ -1,5 +1,5 @@
 const env = {
-  backend_url: process.env.REACT_APP_BACKEND_URL,
+  backendUrl: process.env.REACT_APP_BACKEND_URL,
 };
 
 export default env;

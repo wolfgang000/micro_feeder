@@ -14,7 +14,7 @@ function Landing() {
           </a>
           <a
             className="btn btn-primary"
-            href={`${env.backend_url}/web/auth/login`}
+            href={`${env.backendUrl}/web/auth/login`}
           >
             Log in
           </a>
@@ -36,7 +36,7 @@ function Landing() {
                       className="btn btn-light btn-google"
                       role="button"
                       id="loginWithGoogleButton"
-                      href={`${env.backend_url}/web/auth/login`}
+                      href={`${env.backendUrl}/web/auth/login`}
                     >
                       <img
                         src={googleLogo}

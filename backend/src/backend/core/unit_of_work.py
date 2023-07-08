@@ -37,8 +37,10 @@ class SubscriptionRepository:
             .values(values)
         )
 
-    async def list(self):
-        return await self.session.execute(select(models.Subscription))
+    async def list_by_user_id(self, user_id: int):
+        return await self.session.execute(
+            select(models.Subscription).where(models.Subscription.user_id == user_id)
+        )
 
 
 class UserRepository:
@@ -66,6 +68,16 @@ class UserRepository:
 
     async def get_by_email(self, email: str) -> Result[models.User, str]:
         query = select(models.User).where(models.User.email == email)
+        result = await self.session.execute(query)
+        try:
+            (user,) = result.one()
+            return Ok(user)
+
+        except NoResultFound:
+            return Err("NoResultFound")
+
+    async def get_by_id(self, id: int) -> Result[models.User, str]:
+        query = select(models.User).where(models.User.id == id)
         result = await self.session.execute(query)
         try:
             (user,) = result.one()
