@@ -24,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Reset DB
-        run: (docker container rm micro_feeder_db_dev_1 && docker volume rm micro_feeder_pgdata_dev) || echo "OK"
+        run: (docker container rm micro_feeder_db_dev_1 || docker volume rm micro_feeder_pgdata_dev) || echo "OK"
       - name: Create .env.local.dev
         run: touch ../backend/.env.local.dev
       - run: echo -e "GOOGLE_CLIENT_ID=abc\nGOOGLE_CLIENT_SECRET=abc\nGOOGLE_REDIRECT_URI=abc\n" >> ../backend/.env.local.dev
