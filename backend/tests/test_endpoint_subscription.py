@@ -34,8 +34,10 @@ def test_try_create_subscription_with_invalid_data():
     )
     assert response.status_code == 422
     response = response.json()
-    assert response["detail"][0]["msg"] == "invalid or missing URL scheme"
-    assert response["detail"][1]["msg"] == "ensure this value has at least 1 characters"
+    assert response["detail"]["webhook_url"] == ["invalid or missing URL scheme"]
+    assert response["detail"]["feed_url"] == [
+        "ensure this value has at least 1 characters"
+    ]
 
 
 def test_list_subscription():
