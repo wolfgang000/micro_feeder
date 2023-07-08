@@ -32,14 +32,14 @@ def test_login_redirect_to_google_login():
     assert response.headers["location"].startswith("https://accounts.google.com")
 
 
-def test_login_redirect_to_dashboard_when_already_logged_in():
+def test_login_redirect_to_subscriptions_when_already_logged_in():
     client = TestClient(app)
     response = client.post("/update_session", json={"user_id": 123})
     assert response.status_code == 200
 
     response = client.get("/web/auth/login", follow_redirects=False)
     assert response.status_code == 307
-    assert response.headers["location"].endswith("/dashboard")
+    assert response.headers["location"].endswith("/subscriptions")
 
 
 def test_successful_login_callback(mocker):
@@ -59,4 +59,4 @@ def test_successful_login_callback(mocker):
         "/web/auth/callback", params={"code": "123"}, follow_redirects=False
     )
     assert response.status_code == 307
-    assert response.headers["location"].endswith("/dashboard")
+    assert response.headers["location"].endswith("/subscriptions")

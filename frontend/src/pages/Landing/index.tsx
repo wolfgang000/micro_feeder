@@ -26,7 +26,7 @@ function Landing() {
           <div className="row justify-content-center">
             <div className="col-xl-6">
               <div className="text-center">
-                <h1 className="fw-bold">Feed to your servers the right data</h1>
+                <h1 className="fw-bold">Feed your servers the right data</h1>
                 <h5 className="fw-normal">
                   Subscribe to RSS feeds and receive updates via webhooks.
                 </h5>

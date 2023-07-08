@@ -88,7 +88,7 @@ async def get_or_create_user(uow, user_email) -> models.User:
 async def login(request: Request):
     user_id = request.session.get("user_id")
     redirect_url = (
-        f"{Config.FRONTEND_URL}/dashboard"
+        f"{Config.FRONTEND_URL}/subscriptions"
         if user_id
         else client.get_authorization_url()
     )
@@ -114,7 +114,7 @@ async def callback(request: Request, code: str):
     user = await get_or_create_user(uow, user_email)
     request.session.update({"user_id": user.id})
 
-    return RedirectResponse(f"{Config.FRONTEND_URL}/dashboard")
+    return RedirectResponse(f"{Config.FRONTEND_URL}/subscriptions")
 
 
 @router.post("/web/auth/logout")

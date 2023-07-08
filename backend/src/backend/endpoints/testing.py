@@ -12,4 +12,4 @@ async def logout(request: Request, user_email: str):
     uow = unit_of_work.SqlAlchemyUnitOfWork()
     user = await create_user(uow, {"email": user_email})
     request.session.update({"user_id": user.id})
-    return RedirectResponse(f"{Config.FRONTEND_URL}/dashboard")
+    return RedirectResponse(f"{Config.FRONTEND_URL}/subscriptions")

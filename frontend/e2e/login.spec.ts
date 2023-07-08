@@ -10,11 +10,11 @@ test('Click "Login With Google Button" and show google login page', async ({
   await page.waitForURL(/accounts.google.com/);
 });
 
-test('Already logged in redirect to dashboard when they click the "Login With Google Button"', async ({
+test('Already logged in redirect to subscriptions when they click the "Login With Google Button"', async ({
   page,
 }) => {
   await createUserAndLogin(page);
   await page.goto("/");
   page.locator("#loginWithGoogleButton").click();
-  await page.waitForURL(/dashboard/);
+  await page.waitForURL(/subscriptions/);
 });
