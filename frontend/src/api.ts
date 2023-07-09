@@ -12,7 +12,7 @@ export const core = {
       .post(`/web/subscriptions/`, payload)
       .then((r) => r.data);
   },
-  getSubscriptionas() {
+  getSubscriptions() {
     return axiosInstance.get(`/web/subscriptions/`).then((r) => r.data);
   },
 };

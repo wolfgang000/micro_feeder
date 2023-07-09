@@ -3,7 +3,7 @@ import asyncio
 from datetime import datetime, timezone
 from typing import Dict, Any
 from result import Err, Ok, Result
-from sqlalchemy import select, update
+from sqlalchemy import select, update, delete
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -41,6 +41,25 @@ class SubscriptionRepository:
         return await self.session.execute(
             select(models.Subscription).where(models.Subscription.user_id == user_id)
         )
+
+    async def get_by_id_and_user_id(
+        self, id: int, user_id: int
+    ) -> Result[models.Subscription, str]:
+        query = select(models.Subscription).where(
+            models.Subscription.id == id and models.Subscription.user_id == user_id
+        )
+        result = await self.session.execute(query)
+        try:
+            (subscription,) = result.one()
+            return Ok(subscription)
+
+        except NoResultFound:
+            return Err("NoResultFound")
+
+    async def delete_by_id(self, id: int):
+        query = delete(models.Subscription).where(models.Subscription.id == id)
+        await self.session.execute(query)
+        await self.session.flush()
 
 
 class UserRepository:
@@ -94,7 +113,10 @@ class SqlAlchemyUnitOfWork:
     )
 
     SESSION_FACTORY = async_sessionmaker(
-        bind=ENGINE, autocommit=False, expire_on_commit=False, autoflush=False
+        bind=ENGINE,
+        autocommit=False,
+        expire_on_commit=False,
+        autoflush=False,
     )
 
     def __init__(self, session_factory=SESSION_FACTORY):

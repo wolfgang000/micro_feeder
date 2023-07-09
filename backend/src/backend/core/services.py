@@ -42,6 +42,27 @@ async def list_subscriptions_by_user_id(
         return subscriptions
 
 
+async def get_subscription_by_id_and_user_id(
+    uow: unit_of_work.SqlAlchemyUnitOfWork,
+    user_id: int,
+    subscription_id: int,
+):
+    async with uow:
+        result = await uow.subscription_repo.get_by_id_and_user_id(
+            subscription_id, user_id
+        )
+        return result
+
+
+async def delete_subscription_by_id(
+    uow: unit_of_work.SqlAlchemyUnitOfWork,
+    subscription_id: int,
+):
+    async with uow:
+        await uow.subscription_repo.delete_by_id(subscription_id)
+        await uow.commit()
+
+
 async def create_user(
     uow: unit_of_work.SqlAlchemyUnitOfWork, user_params: dict
 ) -> models.User:

@@ -46,3 +46,46 @@ def test_list_subscription():
     assert response.status_code == 200
     response = response.json()
     assert response == []
+
+
+def test_delete_subscription():
+    client = create_authenticated_client()
+    response = client.post(
+        "/web/subscriptions/",
+        content=json.dumps(
+            {
+                "webhook_url": "http://example.com/webhook",
+                "feed_url": "http://example.com/rss",
+            }
+        ),
+    )
+    assert response.status_code == 201
+    response = response.json()
+    subscription_id = response["id"]
+
+    # Check if existent
+    response = client.get(
+        f"/web/subscriptions/{subscription_id}",
+    )
+    assert response.status_code == 200
+
+    # Delete
+    response = client.delete(
+        f"/web/subscriptions/{subscription_id}",
+    )
+    assert response.status_code == 204
+
+    # Check if still existent
+    response = client.get(
+        f"/web/subscriptions/{subscription_id}",
+    )
+    assert response.status_code == 404
+
+
+def test_try_delete_non_existent_subscription():
+    client = create_authenticated_client()
+    subscription_id = 123
+    response = client.delete(
+        f"/web/subscriptions/{subscription_id}",
+    )
+    assert response.status_code == 404
