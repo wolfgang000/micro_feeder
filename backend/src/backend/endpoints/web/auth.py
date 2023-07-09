@@ -117,7 +117,7 @@ async def callback(request: Request, code: str):
     return RedirectResponse(f"{Config.FRONTEND_URL}/subscriptions")
 
 
-@router.post("/web/auth/logout")
+@router.post("/web/auth/logout", status_code=204)
 async def logout(request: Request):
     request.session.clear()
-    return "ok"
+    return

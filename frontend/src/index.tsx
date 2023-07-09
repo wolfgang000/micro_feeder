@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import AuthRoot from "./pages/AuthRoot";
 import Landing from "./pages/Landing";
 import CreateSubscription from "./pages/CreateSubscription";
 import ListSubscriptions from "./pages/ListSubscriptions";
@@ -7,16 +8,23 @@ import Documentation from "./pages/Documentation";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap";
 import "./index.css";
 
 const router = createBrowserRouter([
   {
-    path: "/subscriptions/add",
-    element: <CreateSubscription />,
-  },
-  {
-    path: "/subscriptions/",
-    element: <ListSubscriptions />,
+    path: "/subscriptions",
+    element: <AuthRoot />,
+    children: [
+      {
+        path: "add",
+        element: <CreateSubscription />,
+      },
+      {
+        path: "",
+        element: <ListSubscriptions />,
+      },
+    ],
   },
   {
     path: "/docs/",

@@ -15,4 +15,7 @@ export const core = {
   getSubscriptions() {
     return axiosInstance.get(`/web/subscriptions/`).then((r) => r.data);
   },
+  logout() {
+    return axiosInstance.post(`/web/auth/logout/`);
+  },
 };
