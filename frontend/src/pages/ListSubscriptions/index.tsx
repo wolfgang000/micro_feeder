@@ -20,28 +20,25 @@ function Page() {
 
   const SubscriptionsTable = () => {
     return (
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Feed Url</th>
-            <th scope="col">Webhook Url</th>
-            <th scope="col"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {subscriptions.map((subscription, index) => (
-            <tr key={index}>
-              <td>{subscription.feed_url}</td>
-              <td>{subscription.webhook_url}</td>
-              <td>
-                <button type="button" className="btn btn-danger">
-                  Delete
-                </button>
-              </td>
+      <div>
+        <div>Active Hooks:</div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Feed Url</th>
+              <th scope="col">Webhook Url</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {subscriptions.map((subscription, index) => (
+              <tr key={index}>
+                <td>{subscription.feed_url}</td>
+                <td>{subscription.webhook_url}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   };
 
@@ -51,7 +48,10 @@ function Page() {
         <div className="card-body text-center">
           <h4 className="card-text">
             You don't have any subscriptions yet,{" "}
-            <Link to="/subscriptions/add">make one</Link>.
+            <Link data-testid="makeSubscriptionLink" to="/subscriptions/add">
+              make one
+            </Link>
+            .
           </h4>
           <p className="card-text">
             Need more info? check out the <Link to="/docs/">Docs</Link>.
@@ -62,11 +62,26 @@ function Page() {
   };
 
   const showSubscriptionsTableOrNotFoundMessage = () => {
-    if (subscriptions.length === 0) {
-      return noSubscriptionsFoundMessage();
-    } else {
-      return SubscriptionsTable();
-    }
+    const component =
+      subscriptions.length === 0
+        ? noSubscriptionsFoundMessage()
+        : SubscriptionsTable();
+
+    return (
+      <div>
+        <div className="text-end pb-3">
+          <Link
+            data-testid="addSubscriptionLink"
+            className="btn btn-primary"
+            role="button"
+            to="/subscriptions/add"
+          >
+            Add subscription
+          </Link>
+        </div>
+        <div>{component}</div>
+      </div>
+    );
   };
 
   const subscriptionsTablePlaceholder = () => {
