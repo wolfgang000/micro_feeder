@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import Landing from "./pages/Landing";
 import CreateSubscription from "./pages/CreateSubscription";
 import ListSubscriptions from "./pages/ListSubscriptions";
+import Documentation from "./pages/Documentation";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/subscriptions/",
     element: <ListSubscriptions />,
+  },
+  {
+    path: "/docs/",
+    element: <Documentation />,
   },
   {
     path: "/",
