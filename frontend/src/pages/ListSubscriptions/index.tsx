@@ -14,7 +14,7 @@ function Page() {
         setSubscriptions(subscriptions);
       })
       .finally(() => {
-        // setIsFeachPromiseSettled(true);
+        setIsFeachPromiseSettled(true);
       });
   }, []);
 
