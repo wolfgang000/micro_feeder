@@ -14,7 +14,7 @@ function Page() {
         setSubscriptions(subscriptions);
       })
       .finally(() => {
-        setIsFeachPromiseSettled(true);
+        // setIsFeachPromiseSettled(true);
       });
   }, []);
 
@@ -88,33 +88,41 @@ function Page() {
 
   const subscriptionsTablePlaceholder = () => {
     return (
-      <table className="table">
-        <thead className="placeholder-glow">
-          <tr>
-            <th scope="col">
-              <span className="placeholder col-2"></span>
-            </th>
-            <th scope="col">
-              <span className="placeholder col-2"></span>
-            </th>
-          </tr>
-        </thead>
+      <div className="placeholder-glow">
+        <div className="text-end pb-3">
+          <span className="placeholder col-2"></span>
+        </div>
+        <div className="text-start pb-3">
+          <span className="placeholder col-2"></span>
+        </div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">
+                <span className="placeholder col-2"></span>
+              </th>
+              <th scope="col">
+                <span className="placeholder col-2"></span>
+              </th>
+            </tr>
+          </thead>
 
-        <tbody className="placeholder-glow">
-          {Array.from(Array(8).keys()).map((_, index) => {
-            return (
-              <tr key={index}>
-                <td>
-                  <span className="placeholder col-10"></span>
-                </td>
-                <td>
-                  <span className="placeholder col-10"></span>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          <tbody>
+            {Array.from(Array(8).keys()).map((_, index) => {
+              return (
+                <tr key={index}>
+                  <td>
+                    <span className="placeholder col-10"></span>
+                  </td>
+                  <td>
+                    <span className="placeholder col-10"></span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     );
   };
 
