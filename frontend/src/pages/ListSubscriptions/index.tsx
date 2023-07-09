@@ -23,7 +23,7 @@ function Page() {
       <div className="card">
         <div className="card-body">
           <h4>Subscriptions:</h4>
-          <table className="table">
+          <table data-testid="subscriptionsTable" className="table">
             <thead>
               <tr>
                 <th scope="col">Feed Url</th>

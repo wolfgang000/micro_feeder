@@ -23,3 +23,25 @@ test("Show noSubscriptionsFoundMessage", async ({ page }) => {
   await listSubscriptionsPage.makeSubscriptionLink.click();
   createSubscriptionPage.validateCurrentUrl();
 });
+
+test("Show user's subscriptions", async ({ page }) => {
+  await createUserAndLogin(page);
+  const listSubscriptionsPage = new ListSubscriptionsPage(page);
+  const createSubscriptionPage = new CreateSubscriptionPage(page);
+  await listSubscriptionsPage.validateCurrentUrl();
+  await expect(listSubscriptionsPage.subscriptionsTable).not.toBeVisible();
+
+  const feedUrl = `http://example-feed.com/${v4()}`;
+  const webhookUrl = `http://example-webhook.com/${v4()}`;
+
+  await createSubscriptionPage.goto();
+  await createSubscriptionPage.validateCurrentUrl();
+  await createSubscriptionPage.createSubscription(feedUrl, webhookUrl);
+
+  await listSubscriptionsPage.goto();
+  await expect(listSubscriptionsPage.subscriptionsTable).toBeVisible();
+  await expect(listSubscriptionsPage.subscriptionsTable).toContainText(feedUrl);
+  await expect(listSubscriptionsPage.subscriptionsTable).toContainText(
+    webhookUrl
+  );
+});
