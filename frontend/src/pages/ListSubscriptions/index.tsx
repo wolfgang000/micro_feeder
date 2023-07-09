@@ -20,24 +20,26 @@ function Page() {
 
   const SubscriptionsTable = () => {
     return (
-      <div>
-        <div>Active Hooks:</div>
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Feed Url</th>
-              <th scope="col">Webhook Url</th>
-            </tr>
-          </thead>
-          <tbody>
-            {subscriptions.map((subscription, index) => (
-              <tr key={index}>
-                <td>{subscription.feed_url}</td>
-                <td>{subscription.webhook_url}</td>
+      <div className="card">
+        <div className="card-body">
+          <h4>Subscriptions:</h4>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Feed Url</th>
+                <th scope="col">Webhook Url</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {subscriptions.map((subscription, index) => (
+                <tr key={index}>
+                  <td>{subscription.feed_url}</td>
+                  <td>{subscription.webhook_url}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   };

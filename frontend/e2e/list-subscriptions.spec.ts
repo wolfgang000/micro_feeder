@@ -7,6 +7,7 @@ import { v4 } from "uuid";
 test("Show noSubscriptionsFoundMessage", async ({ page }) => {
   await createUserAndLogin(page);
   const listSubscriptionsPage = new ListSubscriptionsPage(page);
+  const createSubscriptionPage = new CreateSubscriptionPage(page);
   await listSubscriptionsPage.validateCurrentUrl();
 
   await expect(page.locator("body")).toContainText(
@@ -14,5 +15,11 @@ test("Show noSubscriptionsFoundMessage", async ({ page }) => {
   );
 
   await expect(listSubscriptionsPage.addSubscriptionLink).toBeVisible();
-  await expect(listSubscriptionsPage.addSubscriptionLink).toContain("123");
+  await listSubscriptionsPage.addSubscriptionLink.click();
+  createSubscriptionPage.validateCurrentUrl();
+
+  await listSubscriptionsPage.goto();
+  await expect(listSubscriptionsPage.makeSubscriptionLink).toBeVisible();
+  await listSubscriptionsPage.makeSubscriptionLink.click();
+  createSubscriptionPage.validateCurrentUrl();
 });
