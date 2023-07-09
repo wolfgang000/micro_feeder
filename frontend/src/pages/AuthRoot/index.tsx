@@ -15,9 +15,7 @@ function Page() {
     <div>
       <nav className="navbar navbar-expand-md navbar-light bg-light fixed-top">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
-            MicroFeeder
-          </a>
+          <div className="navbar-brand">MicroFeeder</div>
           <button
             className="navbar-toggler"
             type="button"
