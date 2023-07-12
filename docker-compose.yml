@@ -50,6 +50,16 @@ services:
       sh -c "pip install -e . &&
              celery -A backend.celery.main beat"
 
+  fake_server:
+    <<: *env
+    build:
+      context: backend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ././backend:/home/user/app/
+    command: >
+      sh -c "python3 -m http.server -d ./tests/data 9000"
+
   db_dev:
     image: "postgres:10.15-alpine"
     environment:

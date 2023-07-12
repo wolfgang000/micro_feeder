@@ -1,9 +1,9 @@
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, AnyHttpUrl
 
 
 class SubscriptionRequest(BaseModel):
-    webhook_url: HttpUrl
-    feed_url: HttpUrl
+    webhook_url: AnyHttpUrl
+    feed_url: AnyHttpUrl
 
 
 class SubscriptionResponse(BaseModel):
