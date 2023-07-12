@@ -78,7 +78,7 @@ jobs:
         run: poetry run mypy src tests
 
       - name: Run fake server
-        run: python -m http.server -d ./tests/data 9000
+        run: python -m http.server -d ./tests/data 9000 &
 
       - name: Run tests
         run: poetry run pytest
