@@ -1,3 +1,4 @@
+from backend.core import serializers
 from .main import app
 import asyncio
 from backend.core import unit_of_work, services
@@ -17,7 +18,10 @@ def fetch_feed(subscription_id, feed_url, feed_last_entry_id, webhook_url):
         while (entry := next(entries_iter, None)) is not None and entry[
             "id"
         ] != feed_last_entry_id:
-            new_entries.append(entry)
+            entry_serialized = serializers.FeedEntryWebhookRequest(
+                id=entry["id"], link=entry["link"], summary=entry["summary"]
+            )
+            new_entries.append(entry_serialized.dict())
 
         payload = {"new_entries": new_entries}
         call_webhook.delay(webhook_url, payload)

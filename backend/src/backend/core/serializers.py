@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, AnyHttpUrl
 
 
@@ -11,3 +12,9 @@ class SubscriptionResponse(BaseModel):
     webhook_url: str
     feed_url: str
     inserted_at: str
+
+
+class FeedEntryWebhookRequest(BaseModel):
+    id: Optional[str] = None
+    link: Optional[str] = None
+    summary: Optional[str] = None
