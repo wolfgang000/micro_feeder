@@ -1,0 +1,1 @@
+ALTER TABLE subscription ADD COLUMN feed_last_etag text NULL;

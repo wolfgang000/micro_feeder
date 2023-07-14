@@ -7,10 +7,14 @@ import feedparser
 
 
 @app.task
-def fetch_feed(subscription_id, feed_url, feed_last_entry_id, webhook_url):
-    feed = feedparser.parse(feed_url)
-    entries = feed["entries"]
+def fetch_feed(
+    subscription_id, feed_url, feed_last_entry_id, feed_etag: str, webhook_url
+):
+    feed = feedparser.parse(feed_url, etag=feed_etag)
+    if feed.status == 304:
+        return
 
+    entries = feed["entries"]
     new_feed_last_entry_id = entries[0]["id"]
     if new_feed_last_entry_id != feed_last_entry_id:
         entries_iter = iter(entries)
@@ -28,7 +32,13 @@ def fetch_feed(subscription_id, feed_url, feed_last_entry_id, webhook_url):
 
         loop = asyncio.get_event_loop()
         loop.run_until_complete(
-            update_feed_last_entry_id(subscription_id, new_feed_last_entry_id)
+            update_subscription(
+                subscription_id,
+                {
+                    "feed_last_entry_id": new_feed_last_entry_id,
+                    "feed_last_etag": feed.get("etag"),
+                },
+            )
         )
 
 
@@ -45,14 +55,16 @@ def schedule_fetch_feeds():
     )
     for item in result:
         fetch_feed.delay(
-            item.id, item.feed_url, item.feed_last_entry_id, item.webhook_url
+            item.id,
+            item.feed_url,
+            item.feed_last_entry_id,
+            item.feed_last_etag,
+            item.webhook_url,
         )
 
 
-async def update_feed_last_entry_id(id, feed_last_entry_id):
+async def update_subscription(subscription_id, params):
     uow = unit_of_work.SqlAlchemyUnitOfWork()
     async with uow:
-        await uow.subscription_repo.update_by_id(
-            id, {"feed_last_entry_id": feed_last_entry_id}
-        )
+        await uow.subscription_repo.update_by_id(subscription_id, params)
         await uow.commit()

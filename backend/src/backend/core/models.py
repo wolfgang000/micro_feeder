@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 from sqlalchemy import ForeignKey, ForeignKeyConstraint, UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
@@ -21,7 +22,8 @@ class Subscription(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     webhook_url: Mapped[str]
     feed_url: Mapped[str]
-    feed_last_entry_id: Mapped[str]
+    feed_last_entry_id: Mapped[Optional[str]]
+    feed_last_etag: Mapped[Optional[str]]
     updated_at: Mapped[datetime.datetime]
     inserted_at: Mapped[datetime.datetime]
     user_id = mapped_column(ForeignKey("app_user.id"))
