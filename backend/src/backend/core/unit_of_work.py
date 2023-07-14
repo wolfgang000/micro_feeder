@@ -42,6 +42,9 @@ class SubscriptionRepository:
             select(models.Subscription).where(models.Subscription.user_id == user_id)
         )
 
+    async def list(self):
+        return await self.session.execute(select(models.Subscription))
+
     async def get_by_id_and_user_id(
         self, id: int, user_id: int
     ) -> Result[models.Subscription, str]:
