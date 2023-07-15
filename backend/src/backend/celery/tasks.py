@@ -71,6 +71,7 @@ def schedule_fetch_feeds():
             item.feed_url,
             item.feed_last_entry_id,
             item.feed_last_etag,
+            item.feed_last_modified,
             item.webhook_url,
         )
 
