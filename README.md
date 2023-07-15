@@ -136,8 +136,3 @@ dokku logs micro-feeder-back
 ```
 dokku postgres:connect micro-feeder-db
 ```
-
-### Todo
-
-- [ ] Add deployment script
-- [ ] Add kubernetes deployment
