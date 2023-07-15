@@ -111,6 +111,10 @@ git push server-backend
 git push server-frontend
 ```
 
+OR
+
+Use the Github Actions workflows, remember to set the env variables
+
 # Production debugging
 
 ## Enter to the container
