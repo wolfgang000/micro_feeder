@@ -11,7 +11,10 @@ def fetch_feed(
     subscription_id, feed_url, feed_last_entry_id, feed_etag: str, webhook_url
 ):
     feed = feedparser.parse(feed_url, etag=feed_etag)
-    if feed.status == 304:
+    if feed.get("status") == 304:
+        return
+
+    if feed["bozo"]:
         return
 
     entries = feed["entries"]

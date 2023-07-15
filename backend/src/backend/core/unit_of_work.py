@@ -17,20 +17,20 @@ class SubscriptionRepository:
         self.session = session
 
     async def create(self, subscription: models.Subscription) -> models.Subscription:
-        subscription.inserted_at = datetime.utcnow()
-        subscription.updated_at = datetime.utcnow()
+        subscription.inserted_at = datetime.now(timezone.utc)
+        subscription.updated_at = datetime.now(timezone.utc)
         self.session.add(subscription)
         await self.session.flush()
         return subscription
 
     async def update(self, subscription: models.Subscription) -> models.Subscription:
-        subscription.updated_at = datetime.utcnow()
+        subscription.updated_at = datetime.now(timezone.utc)
         self.session.add(subscription)
         await self.session.flush()
         return subscription
 
     async def update_by_id(self, id: int, values: Dict[str, Any]):
-        values["updated_at"] = datetime.utcnow()
+        values["updated_at"] = datetime.now(timezone.utc)
         await self.session.execute(
             update(models.Subscription)
             .where(models.Subscription.id == id)
@@ -70,20 +70,20 @@ class UserRepository:
         self.session = session
 
     async def create(self, user: models.User) -> models.User:
-        user.inserted_at = datetime.utcnow()
-        user.updated_at = datetime.utcnow()
+        user.inserted_at = datetime.now(timezone.utc)
+        user.updated_at = datetime.now(timezone.utc)
         self.session.add(user)
         await self.session.flush()
         return user
 
     async def update(self, user: models.User) -> models.User:
-        user.updated_at = datetime.utcnow()
+        user.updated_at = datetime.now(timezone.utc)
         self.session.add(user)
         await self.session.flush()
         return user
 
     async def update_by_id(self, id: int, values: Dict[str, Any]):
-        values["updated_at"] = datetime.utcnow()
+        values["updated_at"] = datetime.now(timezone.utc)
         await self.session.execute(
             update(models.User).where(models.User.id == id).values(values)
         )
@@ -113,6 +113,7 @@ class SqlAlchemyUnitOfWork:
     ENGINE = create_async_engine(
         Config.DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1),
         pool_size=Config.DB_POOL_SIZE,
+        connect_args={"options": "-c timezone=utc"},
     )
 
     SESSION_FACTORY = async_sessionmaker(
