@@ -8,10 +8,18 @@ import feedparser
 
 @app.task
 def fetch_feed(
-    subscription_id, feed_url, feed_last_entry_id, feed_etag: str, webhook_url
+    subscription_id,
+    feed_url,
+    feed_last_entry_id,
+    feed_last_etag: str,
+    feed_last_modified: str,
+    webhook_url,
 ):
-    feed = feedparser.parse(feed_url, etag=feed_etag)
+    feed = feedparser.parse(feed_url, etag=feed_last_etag)
     if feed.get("status") == 304:
+        return
+
+    if feed.get("modified") == feed_last_modified:
         return
 
     if feed["bozo"]:
@@ -40,6 +48,7 @@ def fetch_feed(
                 {
                     "feed_last_entry_id": new_feed_last_entry_id,
                     "feed_last_etag": feed.get("etag"),
+                    "feed_last_modified": feed.get("modified"),
                 },
             )
         )

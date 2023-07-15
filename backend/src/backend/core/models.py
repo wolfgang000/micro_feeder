@@ -24,6 +24,7 @@ class Subscription(Base):
     feed_url: Mapped[str]
     feed_last_entry_id: Mapped[Optional[str]]
     feed_last_etag: Mapped[Optional[str]]
+    feed_last_modified: Mapped[Optional[str]]
     updated_at: Mapped[datetime.datetime]
     inserted_at: Mapped[datetime.datetime]
     user_id = mapped_column(ForeignKey("app_user.id"))

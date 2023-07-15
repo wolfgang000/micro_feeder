@@ -41,7 +41,8 @@ def test_fetch_feed_with_new_items(monkeypatch):
         subscription_id=subscription["id"],
         feed_url=subscription["feed_url"],
         feed_last_entry_id="https://abcnews.go.com/US/wireStory/alabama-senator-white-nationalists-racists-after-weeks-declining-101113701",
-        feed_etag="test",
+        feed_last_etag="test",
+        feed_last_modified="123",
         webhook_url=subscription["webhook_url"],
     )
 
