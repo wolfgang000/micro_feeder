@@ -67,7 +67,7 @@ dokku config:set micro-feeder-back \
   # Set the variables from backend/.env.example.prod
 
 dokku ps:scale micro-feeder-back worker=1
-dokku ps:scale micro-feeder-back beat=1
+dokku ps:scale micro-feeder-back scheduler=1
 
 dokku apps:create micro-feeder-front
 dokku builder:set micro-feeder-front build-dir frontend
@@ -111,6 +111,10 @@ git push server-backend
 git push server-frontend
 ```
 
+OR
+
+Use the Github Actions workflows, remember to set the env variables
+
 # Production debugging
 
 ## Enter to the container
@@ -136,8 +140,3 @@ dokku logs micro-feeder-back
 ```
 dokku postgres:connect micro-feeder-db
 ```
-
-### Todo
-
-- [ ] Add deployment script
-- [ ] Add kubernetes deployment

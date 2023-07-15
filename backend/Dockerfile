@@ -7,6 +7,10 @@ RUN poetry export -f requirements.txt --output requirements.txt --without-hashes
 
 FROM python:3.11.4-alpine3.18
 
+RUN apk update \
+    && apk add --no-cache \
+    bash
+
 COPY . /app
 WORKDIR /app
 

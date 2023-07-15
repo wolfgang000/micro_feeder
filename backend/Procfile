@@ -1,4 +1,4 @@
 web: /app/entrypoint.sh
 worker: celery -A backend.celery.main worker -l INFO -E
-beat: celery -A backend.celery.main beat
+scheduler: celery -A backend.celery.main beat
 release: alembic upgrade head
