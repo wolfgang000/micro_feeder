@@ -67,7 +67,7 @@ dokku config:set micro-feeder-back \
   # Set the variables from backend/.env.example.prod
 
 dokku ps:scale micro-feeder-back worker=1
-dokku ps:scale micro-feeder-back beat=1
+dokku ps:scale micro-feeder-back scheduler=1
 
 dokku apps:create micro-feeder-front
 dokku builder:set micro-feeder-front build-dir frontend
