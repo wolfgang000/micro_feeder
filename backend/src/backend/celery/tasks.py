@@ -8,12 +8,23 @@ from backend.core import unit_of_work, services
 import httpx
 import feedparser
 
+ACCEPT_HEADER: str = (
+    "application/atom+xml"
+    ",application/rdf+xml"
+    ",application/rss+xml"
+    ",application/x-netcdf"
+    ",application/xml"
+    ";q=0.9,text/xml"
+    ";q=0.2,*/*"
+    ";q=0.1"
+)
+
 
 def download_file(
     url: str, etag: Optional[str], last_modified: Optional[str]
 ) -> Result[str, str]:
     temp_file_name = f"/tmp/{uuid.uuid4()}"
-    headers = {}
+    headers = {"Accept": ACCEPT_HEADER}
 
     if etag:
         headers["If-None-Match"] = etag
@@ -30,9 +41,12 @@ def download_file(
     if responce.headers.get("Last-Modified") == last_modified:
         return Err("Not Modified")
 
-    with open(temp_file_name, "wb") as f:
-        f.write(responce.content)
-    return Ok(temp_file_name)
+    if responce.status_code == 200:
+        with open(temp_file_name, "wb") as f:
+            f.write(responce.content)
+        return Ok(temp_file_name)
+    else:
+        return Err(f"Error: {responce.status_code}")
 
 
 @app.task

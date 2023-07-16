@@ -4,7 +4,10 @@ from backend.auth import get_current_user
 from backend.core.utils import download_feed_file
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from backend.core import models, unit_of_work, services, serializers
+from fastapi.exceptions import RequestValidationError
 from result import Err
+from pydantic.error_wrappers import ErrorWrapper
+import feedparser
 
 router = APIRouter()
 
@@ -14,9 +17,43 @@ async def create_subscription(
     subscriptionRequest: serializers.SubscriptionRequest,
     current_user: Annotated[models.User, Depends(get_current_user)],
 ):
+    download_file_result = await download_feed_file(subscriptionRequest.feed_url)
+
+    if isinstance(download_file_result, Err):
+        raise RequestValidationError(
+            errors=[
+                {
+                    "loc": ("body", "feed_url"),
+                    "msg": "unable to download the feed, please check the url",
+                }
+            ],
+        )
+
+    (file_path, real_feed_url) = download_file_result.ok_value
+    feed = feedparser.parse(file_path)
+
+    if feed["bozo"]:
+        raise RequestValidationError(
+            errors=[
+                {
+                    "loc": ("body", "feed_url"),
+                    "msg": "the url doesn't point to a valid RSS feed",
+                }
+            ],
+        )
+
+    entries = feed["entries"]
+    new_feed_last_entry_id = entries[0]["id"]
+
     uow = unit_of_work.SqlAlchemyUnitOfWork()
     subscription = await services.create_subscription(
-        uow, {**subscriptionRequest.dict(), "user_id": current_user.id}
+        uow,
+        {
+            **subscriptionRequest.dict(),
+            "feed_url": real_feed_url,
+            "user_id": current_user.id,
+            "feed_last_entry_id": new_feed_last_entry_id,
+        },
     )
     return subscription
 

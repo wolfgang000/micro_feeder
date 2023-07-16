@@ -16,20 +16,21 @@ ACCEPT_HEADER: str = (
 )
 
 
-async def download_feed_file(feed_url: str) -> Result[str, str]:
+async def download_feed_file(feed_url: str) -> Result[tuple[str, str], str]:
     async with AsyncClient() as client:
         try:
-            result = await client.get(
+            response = await client.get(
                 feed_url,
                 headers={"Accept": ACCEPT_HEADER},
+                follow_redirects=True,
             )
-            if result.status_code == 200:
+            if response.status_code == 200:
                 temp_file_name = f"/tmp/{uuid.uuid4()}"
                 async with aiofiles.open(temp_file_name, mode="wb") as f:
-                    await f.write(result.content)
-                return Ok(temp_file_name)
+                    await f.write(response.content)
+                return Ok((temp_file_name, str(response.url)))
             else:
-                return Err("we couldn't find the file")
+                return Err("We couldn't find the file")
         except ConnectTimeout:
             return Err("we couldn't find the file")
         except Exception as err:
