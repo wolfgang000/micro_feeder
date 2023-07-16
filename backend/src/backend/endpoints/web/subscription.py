@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Annotated
 from backend.auth import get_current_user
-from backend.core.utils import download_feed_file
+from backend.core.utils import download_feed_file_async
 from fastapi import APIRouter, Depends, HTTPException, Response, status
 from backend.core import models, unit_of_work, services, serializers
 from fastapi.exceptions import RequestValidationError
@@ -17,7 +17,7 @@ async def create_subscription(
     subscriptionRequest: serializers.SubscriptionRequest,
     current_user: Annotated[models.User, Depends(get_current_user)],
 ):
-    download_file_result = await download_feed_file(subscriptionRequest.feed_url)
+    download_file_result = await download_feed_file_async(subscriptionRequest.feed_url)
 
     if isinstance(download_file_result, Err):
         raise RequestValidationError(

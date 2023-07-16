@@ -28,6 +28,7 @@ function Page() {
               <tr>
                 <th scope="col">Feed Url</th>
                 <th scope="col">Webhook Url</th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
@@ -35,6 +36,9 @@ function Page() {
                 <tr key={index}>
                   <td>{subscription.feed_url}</td>
                   <td>{subscription.webhook_url}</td>
+                  <td>
+                    <button className="btn btn-danger btn-sm">Delete</button>
+                  </td>
                 </tr>
               ))}
             </tbody>
