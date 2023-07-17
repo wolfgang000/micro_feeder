@@ -121,6 +121,7 @@ function Page() {
                   type="button"
                   className="btn btn-danger"
                   data-bs-dismiss="modal"
+                  data-testid="deleteSubscriptionButtonModal"
                   onClick={() =>
                     handleDeleteButtonClick(selectedSubscription.id)
                   }
