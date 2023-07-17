@@ -4,8 +4,13 @@ import { core } from "../../api";
 import { Link } from "react-router-dom";
 
 function Page() {
-  const [subscriptions, setSubscriptions] = useState([] as any[]);
+  const [subscriptions, setSubscriptions] = useState([] as Subscription[]);
   const [isFeachPromiseSettled, setIsFeachPromiseSettled] = useState(false);
+  const [selectedSubscription, setSelectedSubscription] = useState({
+    feed_url: "",
+    webhook_url: "",
+    id: 0,
+  } as Subscription);
 
   useEffect(() => {
     core
@@ -18,31 +23,112 @@ function Page() {
       });
   }, []);
 
+  const handleConfirmDeleteModalButtonClick = (subscription: any) => {
+    setSelectedSubscription(subscription);
+  };
+
+  const handleDeleteButtonClick = (subscriptionId: number) => {
+    setIsFeachPromiseSettled(false);
+    core
+      .deleteSubscription(subscriptionId)
+      .then(() => {
+        return core.getSubscriptions();
+      })
+      .then((subscriptions) => {
+        setSubscriptions(subscriptions);
+      })
+      .finally(() => {
+        setIsFeachPromiseSettled(true);
+      });
+  };
+
   const SubscriptionsTable = () => {
     return (
-      <div className="card">
-        <div className="card-body">
-          <h4>Subscriptions:</h4>
-          <table data-testid="subscriptionsTable" className="table">
-            <thead>
-              <tr>
-                <th scope="col">Feed Url</th>
-                <th scope="col">Webhook Url</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {subscriptions.map((subscription, index) => (
-                <tr key={index}>
-                  <td>{subscription.feed_url}</td>
-                  <td>{subscription.webhook_url}</td>
-                  <td>
-                    <button className="btn btn-danger btn-sm">Delete</button>
-                  </td>
+      <div>
+        <div className="card">
+          <div className="card-body">
+            <h4>Subscriptions:</h4>
+            <table data-testid="subscriptionsTable" className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Feed Url</th>
+                  <th scope="col">Webhook Url</th>
+                  <th scope="col"></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {subscriptions.map((subscription, index) => (
+                  <tr key={index}>
+                    <td>{subscription.feed_url}</td>
+                    <td>{subscription.webhook_url}</td>
+                    <td>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#confirmDeleteModal"
+                        onClick={() =>
+                          handleConfirmDeleteModalButtonClick(subscription)
+                        }
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div
+          className="modal fade"
+          id="confirmDeleteModal"
+          aria-labelledby="confirmDeleteModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="confirmDeleteModalLabel">
+                  Delete Subscription
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="pb-3">
+                  Are you sure you want to delete this subscription?
+                </div>
+                <div>
+                  <strong>{selectedSubscription.feed_url}</strong> →{" "}
+                  <strong>{selectedSubscription.webhook_url}</strong>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  data-bs-dismiss="modal"
+                  onClick={() =>
+                    handleDeleteButtonClick(selectedSubscription.id)
+                  }
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

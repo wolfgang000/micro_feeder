@@ -1,7 +1,10 @@
 import json
+import os
 from fastapi.testclient import TestClient
 from backend.main import app
 from .helper import create_authenticated_client
+
+FAKE_SERVER_URL = os.getenv("FAKE_SERVER_URL")
 
 
 def test_create_subscription():
@@ -11,7 +14,7 @@ def test_create_subscription():
         content=json.dumps(
             {
                 "webhook_url": "http://example.com/webhook",
-                "feed_url": "http://example.com/rss",
+                "feed_url": f"{FAKE_SERVER_URL}/abcnews_usheadlines.xml",
             }
         ),
     )
@@ -55,7 +58,7 @@ def test_delete_subscription():
         content=json.dumps(
             {
                 "webhook_url": "http://example.com/webhook",
-                "feed_url": "http://example.com/rss",
+                "feed_url": f"{FAKE_SERVER_URL}/abcnews_usheadlines.xml",
             }
         ),
     )
