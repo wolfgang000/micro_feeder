@@ -31,7 +31,7 @@ test("Show user's subscriptions", async ({ page }) => {
   await listSubscriptionsPage.validateCurrentUrl();
   await expect(listSubscriptionsPage.subscriptionsTable).not.toBeVisible();
 
-  const feedUrl = `http://example-feed.com/${v4()}`;
+  const feedUrl = `http://fake_server:9000/abcnews_usheadlines_new_items.xml`;
   const webhookUrl = `http://example-webhook.com/${v4()}`;
 
   await createSubscriptionPage.goto();
