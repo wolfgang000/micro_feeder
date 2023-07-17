@@ -1,5 +1,6 @@
 import axios from "axios";
 import env from "./env";
+import { Subscription } from "./models";
 
 const axiosInstance = axios.create({
   baseURL: env.backendUrl,

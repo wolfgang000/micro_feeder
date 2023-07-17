@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./style.css";
 import { core } from "../../api";
 import { Link } from "react-router-dom";
+import { Subscription } from "../../models";
 
 function Page() {
   const [subscriptions, setSubscriptions] = useState([] as Subscription[]);
