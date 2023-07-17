@@ -7,6 +7,8 @@ export class ListSubscriptionsPage {
   readonly makeSubscriptionLink: Locator;
   readonly subscriptionsTable: Locator;
   readonly logoutButton: Locator;
+  readonly confirmDeleteModal: Locator;
+  readonly deleteSubscriptionButtonModal: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -14,6 +16,10 @@ export class ListSubscriptionsPage {
     this.makeSubscriptionLink = page.getByTestId("makeSubscriptionLink");
     this.subscriptionsTable = page.getByTestId("subscriptionsTable");
     this.logoutButton = page.getByTestId("logoutButton");
+    this.confirmDeleteModal = page.locator("#confirmDeleteModal");
+    this.deleteSubscriptionButtonModal = page.getByTestId(
+      "deleteSubscriptionButtonModal"
+    );
   }
 
   async goto() {

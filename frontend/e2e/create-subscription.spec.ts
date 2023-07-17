@@ -8,7 +8,7 @@ test("Create subscription with valid params", async ({ page }) => {
   await createUserAndLogin(page);
   const createSubscriptionPage = new CreateSubscriptionPage(page);
   const listSubscriptionsPage = new ListSubscriptionsPage(page);
-  const feedUrl = `http://example-feed.com/${v4()}`;
+  const feedUrl = `http://fake_server:9000/abcnews_usheadlines_new_items.xml`;
   const webhookUrl = `http://example-webhook.com/${v4()}`;
 
   await createSubscriptionPage.goto();

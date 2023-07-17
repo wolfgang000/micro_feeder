@@ -29,10 +29,17 @@ class Subscription(Base):
     inserted_at: Mapped[datetime.datetime]
     user_id = mapped_column(ForeignKey("app_user.id"))
 
-    def __init__(self, webhook_url: str, feed_url: str, user_id: int):
+    def __init__(
+        self,
+        webhook_url: str,
+        feed_url: str,
+        user_id: int,
+        feed_last_entry_id: Optional[str],
+    ):
         self.webhook_url = webhook_url
         self.feed_url = feed_url
         self.user_id = user_id
+        self.feed_last_entry_id = feed_last_entry_id
 
     def __repr__(self) -> str:
         return f"Subscription(id={self.id!r}, webhook_url={self.webhook_url!r}, feed_url={self.feed_url!r})"

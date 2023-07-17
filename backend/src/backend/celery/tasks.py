@@ -1,38 +1,13 @@
 from typing import Optional
 import uuid
 from backend.core import serializers
+from backend.core.utils import download_feed_file
 from result import Ok, Result, Err
 from .main import app
 import asyncio
 from backend.core import unit_of_work, services
 import httpx
 import feedparser
-
-
-def download_file(
-    url: str, etag: Optional[str], last_modified: Optional[str]
-) -> Result[str, str]:
-    temp_file_name = f"/tmp/{uuid.uuid4()}"
-    headers = {}
-
-    if etag:
-        headers["If-None-Match"] = etag
-
-    if last_modified:
-        headers["If-Modified-Since"] = last_modified
-
-    responce = httpx.get(url, headers=headers)
-
-    if responce.status_code == 304:
-        return Err("Not Modified")
-
-    # Some times the servers has the Last-Modified header but doesn't implement the If-Modified-Since validation logic
-    if responce.headers.get("Last-Modified") == last_modified:
-        return Err("Not Modified")
-
-    with open(temp_file_name, "wb") as f:
-        f.write(responce.content)
-    return Ok(temp_file_name)
 
 
 @app.task
@@ -44,7 +19,7 @@ def fetch_feed(
     feed_last_modified: str,
     webhook_url: str,
 ):
-    download_file_result = download_file(
+    download_file_result = download_feed_file(
         feed_url, etag=feed_last_etag, last_modified=feed_last_modified
     )
 
