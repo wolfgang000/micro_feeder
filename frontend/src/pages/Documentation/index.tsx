@@ -1,7 +1,7 @@
 import "./style.css";
 
 function Page() {
-  return <div></div>;
+  return <div>Work in Progress</div>;
 }
 
 export default Page;
