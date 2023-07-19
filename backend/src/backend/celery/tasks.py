@@ -42,11 +42,15 @@ def fetch_feed(
             "id"
         ] != feed_last_entry_id:
             entry_serialized = serializers.FeedEntryWebhookRequest(
-                id=entry["id"], link=entry["link"], summary=entry["summary"]
+                id=entry.get("id"),
+                link=entry.get("link"),
+                title=entry.get("title"),
+                summary=entry.get("summary"),
+                published_at=entry.get("published"),
             )
             new_entries.append(entry_serialized.dict())
 
-        payload = {"new_entries": new_entries}
+        payload = {"subscription_id": subscription_id, "new_entries": new_entries}
         call_webhook.delay(webhook_url, payload)
 
         loop = asyncio.get_event_loop()
