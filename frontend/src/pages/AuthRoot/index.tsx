@@ -13,7 +13,7 @@ function Page() {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-md navbar-light bg-light fixed-top">
+      <nav className="navbar border-bottom navbar-expand-md navbar-light bg-white fixed-top">
         <div className="container-fluid">
           <div className="navbar-brand">MicroFeeder</div>
           <button
