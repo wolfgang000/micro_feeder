@@ -38,6 +38,7 @@ async def download_feed_file_async(feed_url: str) -> Result[tuple[str, str], str
         except Exception as err:
             return Err("general error")
 
+
 def download_feed_file(
     url: str, etag: Optional[str], last_modified: Optional[str]
 ) -> Result[str, str]:
@@ -56,7 +57,7 @@ def download_feed_file(
         return Err("Not Modified")
 
     # Some times the servers has the Last-Modified header but doesn't implement the If-Modified-Since validation logic
-    if responce.headers.get("Last-Modified") == last_modified:
+    if last_modified and responce.headers.get("Last-Modified") == last_modified:
         return Err("Not Modified")
 
     if responce.status_code == 200:
