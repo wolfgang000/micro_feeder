@@ -25,14 +25,20 @@ def test_fetch_feed_with_new_items(monkeypatch):
     subscription = response.json()
 
     def mock_return(webhook_url, payload):
+        subscription_id = payload["subscription_id"]
         new_entries = payload["new_entries"]
         assert webhook_url == "http://testserver/"
+        assert subscription_id == subscription["id"]
         assert len(new_entries) == 2
         first_entry = new_entries[0]
-        assert (
-            first_entry["id"]
-            == "https://abcnews.go.com/US/wireStory/mikala-jones-hawaii-surfer-filming-inside-waves-dies-101100274"
-        )
+        assert first_entry == {
+            "id": "https://abcnews.go.com/US/wireStory/mikala-jones-hawaii-surfer-filming-inside-waves-dies-101100274",
+            "link": "https://abcnews.go.com/US/wireStory/mikala-jones-hawaii-surfer-filming-inside-waves-dies-101100274",
+            "published_at": "Tue, 11 Jul 2023 21:42:24 -0400",
+            "title": "Mikala Jones, Hawaii surfer known for filming inside waves, dies in surfing accident",
+            "summary": "A Hawaii surfer known for shooting awe-inspiring photos and videos from the inside of massive, curling waves has died after a surfing accident in Indonesia",
+        }
+
         return
 
     monkeypatch.setattr("backend.celery.tasks.call_webhook.delay", mock_return)

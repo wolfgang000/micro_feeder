@@ -17,4 +17,6 @@ class SubscriptionResponse(BaseModel):
 class FeedEntryWebhookRequest(BaseModel):
     id: Optional[str] = None
     link: Optional[str] = None
+    title: Optional[str] = None
     summary: Optional[str] = None
+    published_at: Optional[str] = None
