@@ -26,7 +26,7 @@ def fetch_feed(
     if isinstance(download_file_result, Err):
         return
 
-    file_path = download_file_result.ok_value
+    (file_path, new_etag, new_last_modified) = download_file_result.ok_value
 
     feed = feedparser.parse(file_path)
 
@@ -59,8 +59,8 @@ def fetch_feed(
                 subscription_id,
                 {
                     "feed_last_entry_id": new_feed_last_entry_id,
-                    "feed_last_etag": feed.get("etag"),
-                    "feed_last_modified": feed.get("modified"),
+                    "feed_last_etag": new_etag,
+                    "feed_last_modified": new_last_modified,
                 },
             )
         )

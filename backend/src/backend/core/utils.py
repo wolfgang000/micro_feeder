@@ -41,7 +41,7 @@ async def download_feed_file_async(feed_url: str) -> Result[tuple[str, str], str
 
 def download_feed_file(
     url: str, etag: Optional[str], last_modified: Optional[str]
-) -> Result[str, str]:
+) -> Result[tuple[str, Optional[str], Optional[str]], str]:
     temp_file_name = f"/tmp/{uuid.uuid4()}"
     headers = {"Accept": ACCEPT_HEADER}
 
@@ -61,8 +61,13 @@ def download_feed_file(
         return Err("Not Modified")
 
     if responce.status_code == 200:
+        new_etag = responce.headers.get("ETag")
+        new_last_modified = responce.headers.get("Last-Modified")
         with open(temp_file_name, "wb") as f:
-            f.write(responce.content)
-        return Ok(temp_file_name)
+            f.write(
+                responce.content,
+            )
+
+        return Ok((temp_file_name, new_etag, new_last_modified))
     else:
         return Err(f"Error: {responce.status_code}")
