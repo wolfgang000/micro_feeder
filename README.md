@@ -48,6 +48,12 @@ Message Broker(Rabbitmq): `localhost:8005`
 
 Message Broker Store(Redis): `localhost:8006`
 
+## Tests
+
+[Backend](backend/README.md#run-tests)
+
+[Frontend + E2E](frontend/README.md#run-end-to-end-tests-with-playwright)
+
 # Deployment
 
 ## Setup server
