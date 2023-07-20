@@ -21,14 +21,14 @@ const router = createBrowserRouter([
         element: <CreateSubscription />,
       },
       {
+        path: "docs",
+        element: <Documentation />,
+      },
+      {
         path: "",
         element: <ListSubscriptions />,
       },
     ],
-  },
-  {
-    path: "/docs/",
-    element: <Documentation />,
   },
   {
     path: "/",

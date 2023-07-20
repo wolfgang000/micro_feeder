@@ -30,7 +30,10 @@ function Page() {
           <div className="collapse navbar-collapse" id="navbarCollapse">
             <ul className="navbar-nav me-auto mb-2 mb-md-0"></ul>
             <div className="d-flex">
-              <Link className="btn btn-light me-2" to="/docs/">
+              <Link className="btn btn-light me-2" to="/subscriptions/">
+                My Subscriptions
+              </Link>
+              <Link className="btn btn-light me-2" to="/subscriptions/docs/">
                 Docs
               </Link>
               <div className="vr me-2"></div>

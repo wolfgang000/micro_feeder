@@ -1,3 +1,4 @@
+from datetime import datetime, timezone, timedelta
 from typing import Optional
 import uuid
 from backend.core import serializers
@@ -19,11 +20,20 @@ def fetch_feed(
     feed_last_modified: str,
     webhook_url: str,
 ):
+    loop = asyncio.get_event_loop()
     download_file_result = download_feed_file(
         feed_url, etag=feed_last_etag, last_modified=feed_last_modified
     )
 
     if isinstance(download_file_result, Err):
+        loop.run_until_complete(
+            update_subscription(
+                subscription_id,
+                {
+                    "feed_last_fetched_at": datetime.now(timezone.utc),
+                },
+            )
+        )
         return
 
     (file_path, new_etag, new_last_modified) = download_file_result.ok_value
@@ -31,6 +41,14 @@ def fetch_feed(
     feed = feedparser.parse(file_path)
 
     if feed["bozo"]:
+        loop.run_until_complete(
+            update_subscription(
+                subscription_id,
+                {
+                    "feed_last_fetched_at": datetime.now(timezone.utc),
+                },
+            )
+        )
         return
 
     entries = feed["entries"]
@@ -53,7 +71,6 @@ def fetch_feed(
         payload = {"subscription_id": subscription_id, "new_entries": new_entries}
         call_webhook.delay(webhook_url, payload)
 
-        loop = asyncio.get_event_loop()
         loop.run_until_complete(
             update_subscription(
                 subscription_id,
@@ -61,9 +78,20 @@ def fetch_feed(
                     "feed_last_entry_id": new_feed_last_entry_id,
                     "feed_last_etag": new_etag,
                     "feed_last_modified": new_last_modified,
+                    "feed_last_fetched_at": datetime.now(timezone.utc),
                 },
             )
         )
+    else:
+        loop.run_until_complete(
+            update_subscription(
+                subscription_id,
+                {
+                    "feed_last_fetched_at": datetime.now(timezone.utc),
+                },
+            )
+        )
+    return
 
 
 @app.task
@@ -73,10 +101,11 @@ def call_webhook(webhook_url, payload):
 
 @app.task
 def schedule_fetch_feeds():
-    loop = asyncio.get_event_loop()
-    result = loop.run_until_complete(
-        services.list_subscriptions(unit_of_work.SqlAlchemyUnitOfWork())
+    result = services.list_pending_to_feach_subscriptions(
+        unit_of_work.SqlAlchemyUnitOfWork(),
+        datetime.now(timezone.utc) + timedelta(minutes=-5),
     )
+
     for item in result:
         fetch_feed.delay(
             item.id,
