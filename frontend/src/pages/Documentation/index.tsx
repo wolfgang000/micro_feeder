@@ -18,14 +18,23 @@ function Page() {
   var textedJson = JSON.stringify(data, undefined, 4);
 
   return (
-    <div>
-      <div className="container">
-        <h3>Webhook events</h3>
-        Requests are sent as POSTs with{" "}
-        <code>Content-Type: application/json</code>:
-        <pre className="code-block">
-          <code>{textedJson}</code>
-        </pre>
+    <div className="container">
+      <div className="card">
+        <div className="card-body">
+          <div className="container">
+            <h3>RSS Feed</h3>
+            The feed url should point to a valid RSS feed, this feed is going to
+            be checked every 5 minutes to look for new entries, if new entries
+            are found then a webhook event with the new events is going to be
+            triggered.
+            <h3 className="pt-2">Webhook events</h3>
+            Requests are sent as POSTs with{" "}
+            <code>Content-Type: application/json</code>:
+            <pre className="code-block">
+              <code>{textedJson}</code>
+            </pre>
+          </div>
+        </div>
       </div>
     </div>
   );

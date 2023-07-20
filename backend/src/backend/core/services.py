@@ -1,6 +1,8 @@
+import datetime
 from backend.core import unit_of_work, models
 from result import Ok, Err, Result
 from sqlalchemy.sql import text
+from sqlalchemy import select
 from typing import Any
 
 
@@ -47,6 +49,20 @@ async def list_subscriptions(
 ) -> list[models.Subscription]:
     async with uow:
         result = await uow.subscription_repo.list()
+        subscriptions = [r for (r,) in list(result)]
+        return subscriptions
+
+
+def list_pending_to_feach_subscriptions(
+    uow: unit_of_work.SqlAlchemyUnitOfWork,
+    from_date: datetime.datetime,
+) -> list[models.Subscription]:
+    with uow:
+        result = uow.sync_session.execute(
+            select(models.Subscription).where(
+                models.Subscription.feed_last_fetched_at > from_date
+            )
+        )
         subscriptions = [r for (r,) in list(result)]
         return subscriptions
 

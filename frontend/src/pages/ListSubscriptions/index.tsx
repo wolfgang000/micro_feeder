@@ -148,7 +148,8 @@ function Page() {
             .
           </h4>
           <p className="card-text">
-            Need more info? check out the <Link to="/docs/">Docs</Link>.
+            Need more info? check out the{" "}
+            <Link to="/subscriptions/docs/">Docs</Link>.
           </p>
         </div>
       </div>

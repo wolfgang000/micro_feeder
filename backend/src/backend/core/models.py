@@ -25,6 +25,7 @@ class Subscription(Base):
     feed_last_entry_id: Mapped[Optional[str]]
     feed_last_etag: Mapped[Optional[str]]
     feed_last_modified: Mapped[Optional[str]]
+    feed_last_fetched_at: Mapped[datetime.datetime]
     updated_at: Mapped[datetime.datetime]
     inserted_at: Mapped[datetime.datetime]
     user_id = mapped_column(ForeignKey("app_user.id"))
@@ -34,11 +35,13 @@ class Subscription(Base):
         webhook_url: str,
         feed_url: str,
         user_id: int,
+        feed_last_fetched_at: datetime.datetime,
         feed_last_entry_id: Optional[str],
     ):
         self.webhook_url = webhook_url
         self.feed_url = feed_url
         self.user_id = user_id
+        self.feed_last_fetched_at = feed_last_fetched_at
         self.feed_last_entry_id = feed_last_entry_id
 
     def __repr__(self) -> str:

@@ -1,4 +1,5 @@
 from __future__ import annotations
+from datetime import datetime, timezone
 from typing import Annotated
 from backend.auth import get_current_user
 from backend.core.utils import download_feed_file_async
@@ -52,6 +53,7 @@ async def create_subscription(
             **subscriptionRequest.dict(),
             "feed_url": real_feed_url,
             "user_id": current_user.id,
+            "feed_last_fetched_at": datetime.now(timezone.utc),
             "feed_last_entry_id": new_feed_last_entry_id,
         },
     )

@@ -3,8 +3,9 @@ import asyncio
 from datetime import datetime, timezone
 from typing import Dict, Any
 from result import Err, Ok, Result
-from sqlalchemy import select, update, delete
+from sqlalchemy import create_engine, select, update, delete
 from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import async_sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.exc import NoResultFound
@@ -116,6 +117,12 @@ class SqlAlchemyUnitOfWork:
         connect_args={"options": "-c timezone=utc"},
     )
 
+    SYNC_ENGINE = create_engine(
+        Config.DATABASE_URL.replace("postgres://", "postgresql+psycopg://", 1),
+        pool_size=Config.DB_POOL_SIZE,
+        connect_args={"options": "-c timezone=utc"},
+    )
+
     SESSION_FACTORY = async_sessionmaker(
         bind=ENGINE,
         autocommit=False,
@@ -123,8 +130,18 @@ class SqlAlchemyUnitOfWork:
         autoflush=False,
     )
 
-    def __init__(self, session_factory=SESSION_FACTORY):
+    SYNC_SESSION_FACTORY = sessionmaker(
+        bind=SYNC_ENGINE,
+        autocommit=False,
+        expire_on_commit=False,
+        autoflush=False,
+    )
+
+    def __init__(
+        self, session_factory=SESSION_FACTORY, sync_session_factory=SYNC_SESSION_FACTORY
+    ):
         self.session_factory = session_factory
+        self.sync_session_factory = sync_session_factory
 
     async def __aenter__(self):
         self.session = self.session_factory()
@@ -135,6 +152,13 @@ class SqlAlchemyUnitOfWork:
     async def __aexit__(self, *args):
         task = asyncio.create_task(self.session.close())
         await asyncio.shield(task)
+
+    def __enter__(self):
+        self.sync_session = self.sync_session_factory()
+        return self
+
+    def __exit__(self, *args):
+        self.sync_session.close()
 
     async def commit(self):
         await self.session.commit()
