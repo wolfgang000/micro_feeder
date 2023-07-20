@@ -54,6 +54,11 @@ Message Broker Store(Redis): `localhost:8006`
 
 [Frontend + E2E](frontend/README.md#run-end-to-end-tests-with-playwright)
 
+
+# Architectural diagram
+![Architectural diagram](https://github.com/wolfgang000/micro_feeder/assets/4041136/63c25a0d-a6b1-4652-b2b1-021b85fce24e)
+
+
 # Deployment
 
 ## Setup server
