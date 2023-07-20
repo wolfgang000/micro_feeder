@@ -81,7 +81,7 @@ jobs:
         run: python -m http.server -d ./tests/data 9000 &
 
       - name: Run tests
-        run: poetry run pytest --cov-report html --cov=backend
+        run: poetry run pytest --cov-report html --cov=backend --cov-report term
 
       - uses: actions/upload-artifact@v3
         if: always()
