@@ -7,7 +7,7 @@ from backend.main import app
 from uuid import uuid4
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def clear_db():
     with db_helper.sql_connect_test() as conn:
         conn.autocommit = True
@@ -44,13 +44,13 @@ def pytest_sessionstart(session):
     setup_db()
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def client() -> Generator:
     with TestClient(app) as c:
         yield c
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def authenticated_client(client: TestClient) -> Generator:
     email = f"{uuid4()}@example.com"
     response = client.get(

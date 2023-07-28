@@ -18,6 +18,7 @@ def sql_connect():
         )
     )
 
+
 def sql_connect_test():
     return psycopg.connect(
         "dbname={} user={} password={} port={} host={}".format(
