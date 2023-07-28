@@ -1,15 +1,15 @@
 import json
 import os
+import pytest
 from fastapi.testclient import TestClient
 from backend.main import app
 from .helper import create_authenticated_client
 
 FAKE_SERVER_URL = os.getenv("FAKE_SERVER_URL")
 
-
-def test_create_subscription():
-    client = create_authenticated_client()
-    response = client.post(
+@pytest.mark.usefixtures("clear_db")
+def test_create_subscription(authenticated_client: TestClient):
+    response = authenticated_client.post(
         "/web/subscriptions/",
         content=json.dumps(
             {
@@ -23,10 +23,9 @@ def test_create_subscription():
     assert response["id"] is not None
     assert response["inserted_at"] is not None
 
-
-def test_try_create_subscription_with_invalid_data():
-    client = create_authenticated_client()
-    response = client.post(
+@pytest.mark.usefixtures("clear_db")
+def test_try_create_subscription_with_invalid_data(authenticated_client: TestClient):
+    response = authenticated_client.post(
         "/web/subscriptions/",
         content=json.dumps(
             {
@@ -42,18 +41,16 @@ def test_try_create_subscription_with_invalid_data():
         "ensure this value has at least 1 characters"
     ]
 
-
-def test_list_subscription():
-    client = create_authenticated_client()
-    response = client.get("/web/subscriptions/")
+@pytest.mark.usefixtures("clear_db")
+def test_list_subscription(authenticated_client: TestClient):
+    response = authenticated_client.get("/web/subscriptions/")
     assert response.status_code == 200
     response = response.json()
     assert response == []
 
-
-def test_delete_subscription():
-    client = create_authenticated_client()
-    response = client.post(
+@pytest.mark.usefixtures("clear_db")
+def test_delete_subscription(authenticated_client: TestClient):
+    response = authenticated_client.post(
         "/web/subscriptions/",
         content=json.dumps(
             {
@@ -67,28 +64,27 @@ def test_delete_subscription():
     subscription_id = response["id"]
 
     # Check if existent
-    response = client.get(
+    response = authenticated_client.get(
         f"/web/subscriptions/{subscription_id}",
     )
     assert response.status_code == 200
 
     # Delete
-    response = client.delete(
+    response = authenticated_client.delete(
         f"/web/subscriptions/{subscription_id}",
     )
     assert response.status_code == 204
 
     # Check if still existent
-    response = client.get(
+    response = authenticated_client.get(
         f"/web/subscriptions/{subscription_id}",
     )
     assert response.status_code == 404
 
-
-def test_try_delete_non_existent_subscription():
-    client = create_authenticated_client()
+@pytest.mark.usefixtures("clear_db")
+def test_try_delete_non_existent_subscription(authenticated_client: TestClient):
     subscription_id = 123
-    response = client.delete(
+    response = authenticated_client.delete(
         f"/web/subscriptions/{subscription_id}",
     )
     assert response.status_code == 404

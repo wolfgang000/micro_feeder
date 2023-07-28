@@ -17,3 +17,10 @@ def sql_connect():
             "postgres_dev", db_username, db_password, db_port, db_hostname
         )
     )
+
+def sql_connect_test():
+    return psycopg.connect(
+        "dbname={} user={} password={} port={} host={}".format(
+            "postgres_dev_test", db_username, db_password, db_port, db_hostname
+        )
+    )
