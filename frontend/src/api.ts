@@ -22,6 +22,6 @@ export const core = {
     return axiosInstance.delete(`/web/subscriptions/${id}`);
   },
   logout() {
-    return axiosInstance.post(`/web/auth/logout/`);
+    return axiosInstance.post(`/web/auth/logout`);
   },
 };
