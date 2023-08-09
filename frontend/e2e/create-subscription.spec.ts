@@ -48,9 +48,9 @@ test("Show error on invalid subscription params", async ({ page }) => {
   const webhookUrlFieldError = page.getByTestId("webhookUrlFieldError");
 
   await expect(feedUrlFieldError).toContainText(
-    "invalid or missing URL scheme"
+    "invalid or missing URL scheme",
   );
   await expect(webhookUrlFieldError).toContainText(
-    "invalid or missing URL scheme"
+    "invalid or missing URL scheme",
   );
 });

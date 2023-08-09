@@ -11,7 +11,7 @@ test("Show noSubscriptionsFoundMessage", async ({ page }) => {
   await listSubscriptionsPage.validateCurrentUrl();
 
   await expect(page.locator("body")).toContainText(
-    "You don't have any subscriptions yet"
+    "You don't have any subscriptions yet",
   );
 
   await expect(listSubscriptionsPage.addSubscriptionLink).toBeVisible();
@@ -42,6 +42,6 @@ test("Show user's subscriptions", async ({ page }) => {
   await expect(listSubscriptionsPage.subscriptionsTable).toBeVisible();
   await expect(listSubscriptionsPage.subscriptionsTable).toContainText(feedUrl);
   await expect(listSubscriptionsPage.subscriptionsTable).toContainText(
-    webhookUrl
+    webhookUrl,
   );
 });
