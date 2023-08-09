@@ -18,7 +18,7 @@ export class ListSubscriptionsPage {
     this.logoutButton = page.getByTestId("logoutButton");
     this.confirmDeleteModal = page.locator("#confirmDeleteModal");
     this.deleteSubscriptionButtonModal = page.getByTestId(
-      "deleteSubscriptionButtonModal"
+      "deleteSubscriptionButtonModal",
     );
   }
 

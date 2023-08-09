@@ -17,49 +17,49 @@ test("delete subscription", async ({ page }) => {
   await createSubscriptionPage.goto();
   await createSubscriptionPage.createSubscription(
     feedUrl1,
-    `http://example-webhook.com/${v4()}`
+    `http://example-webhook.com/${v4()}`,
   );
   await listSubscriptionsPage.validateCurrentUrl();
 
   await createSubscriptionPage.goto();
   await createSubscriptionPage.createSubscription(
     feedUrl2,
-    `http://example-webhook.com/${v4()}`
+    `http://example-webhook.com/${v4()}`,
   );
   await listSubscriptionsPage.validateCurrentUrl();
 
   await listSubscriptionsPage.goto();
   await expect(listSubscriptionsPage.subscriptionsTable).toBeVisible();
   await expect(listSubscriptionsPage.subscriptionsTable).toContainText(
-    feedUrl1
+    feedUrl1,
   );
   await expect(listSubscriptionsPage.subscriptionsTable).toContainText(
-    feedUrl2
+    feedUrl2,
   );
   //-----------------------------------
   // Select and delete feedUrl1
   const selectedRow = listSubscriptionsPage.subscriptionsTable.locator(
-    `//td[contains(text(), "${feedUrl1}")]/..`
+    `//td[contains(text(), "${feedUrl1}")]/..`,
   );
 
   const selectedRowDeleteButton = selectedRow.locator(
-    `//button[contains(text(), "Delete")]`
+    `//button[contains(text(), "Delete")]`,
   );
   await expect(selectedRowDeleteButton).toBeVisible();
   await selectedRowDeleteButton.click();
 
   await expect(listSubscriptionsPage.confirmDeleteModal).toBeVisible();
   await expect(
-    listSubscriptionsPage.deleteSubscriptionButtonModal
+    listSubscriptionsPage.deleteSubscriptionButtonModal,
   ).toBeVisible();
   await listSubscriptionsPage.deleteSubscriptionButtonModal.click();
 
   //--------
   // Show feedUrl2 but not feedUrl1
   await expect(listSubscriptionsPage.subscriptionsTable).not.toContainText(
-    feedUrl1
+    feedUrl1,
   );
   await expect(listSubscriptionsPage.subscriptionsTable).toContainText(
-    feedUrl2
+    feedUrl2,
   );
 });

@@ -7,7 +7,7 @@ export const createUserAndLogin = async (page: Page) => {
   await page.goto(
     `${
       env.backendUrl || "http://localhost:8001"
-    }/testing/create_user_and_login/?user_email=${userEmail}`
+    }/testing/create_user_and_login/?user_email=${userEmail}`,
   );
   await page.waitForURL(/subscriptions/);
 };
