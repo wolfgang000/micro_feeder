@@ -19,7 +19,7 @@ alembic = "^1.11.2"
 celery = "^5.3.1"
 redis = "^4.6.0"
 feedparser = "^6.0.10"
-aiofiles = "^23.1.0"
+aiofiles = "^23.2.1"
 oauthlib = "^3.2.2"
 itsdangerous = "^2.1.2"
 
