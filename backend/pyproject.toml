@@ -29,7 +29,7 @@ pytest = "^7.4.0"
 black = "^23.7.0"
 mypy = "^1.5.1"
 anyio = {extras = ["trio"], version = "^3.7.1"}
-types-aiofiles = "^23.1.0.5"
+types-aiofiles = "^23.2.0.0"
 pytest-mock = "^3.11.1"
 types-oauthlib = "^3.2.0.9"
 pytest-cov = "^4.1.0"
