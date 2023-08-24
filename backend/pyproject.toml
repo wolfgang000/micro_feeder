@@ -15,7 +15,7 @@ sqlalchemy = {extras = ["asyncio"], version = "^2.0.19"}
 psycopg = {extras = ["binary", "pool"], version = "^3.1.9"}
 result = "^0.13.1"
 httpx = "^0.24.1"
-alembic = "^1.11.2"
+alembic = "^1.11.3"
 celery = "^5.3.1"
 redis = "^4.6.0"
 feedparser = "^6.0.10"
