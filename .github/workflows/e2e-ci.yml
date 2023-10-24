@@ -24,7 +24,7 @@ jobs:
       - name: Cache Docker images.
         uses: ScribeMD/docker-cache@0.3.6
         with:
-          key: docker-${{ runner.os }}-${{ hashFiles('docker-compose.yml') }}-${{ hashFiles('backend/Dockerfile.dev') }}-${{ hashFiles('frontend/Dockerfile.dev') }}
+          key: docker-${{ runner.os }}-${{ hashFiles('docker-compose.yml') }}-${{ hashFiles('backend/poetry.lock') }}-${{ hashFiles('frontend/Dockerfile.dev') }}
       - name: Reset DB
         run: (docker container rm micro_feeder_db_dev_1 || docker volume rm micro_feeder_pgdata_dev) || echo "OK"
       - name: Create .env.local.dev
