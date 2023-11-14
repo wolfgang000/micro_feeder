@@ -14,7 +14,7 @@ uvicorn = {extras = ["standard"], version = "^0.23.2"}
 sqlalchemy = {extras = ["asyncio"], version = "^2.0.23"}
 psycopg = {extras = ["binary", "pool"], version = "^3.1.12"}
 result = "^0.13.1"
-httpx = "^0.25.0"
+httpx = "^0.25.1"
 alembic = "^1.12.1"
 celery = "^5.3.4"
 redis = "^5.0.1"
