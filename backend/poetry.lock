@@ -1308,13 +1308,13 @@ ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"
 
 [[package]]
 name = "result"
-version = "0.14.0"
+version = "0.15.0"
 description = "A Rust-like result type for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "result-0.14.0-py3-none-any.whl", hash = "sha256:d043d606eb86e24099900712aa4c51907867857dc9f30264370398c4a5d3bd08"},
-    {file = "result-0.14.0.tar.gz", hash = "sha256:10c7bd9f2d0ac0efec4ac48483513565117a8ba1d466b9e260eaf41e15d8e1a3"},
+    {file = "result-0.15.0-py3-none-any.whl", hash = "sha256:5478238faeceb000a31b3904fdac9edbc3bcb471ac269c9ca059b0bf5a14fbb7"},
+    {file = "result-0.15.0.tar.gz", hash = "sha256:efd53ffc042252da3ee42d75b2e351cee396d0d3b9a31b366d7c9f93a451af9a"},
 ]
 
 [[package]]
@@ -1735,4 +1735,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "6c8750504992ac2c301557b4ef10394f2e23577775168176a3fc5380cca4816c"
+content-hash = "753ae31bcaec1cbbf97896aaabfe0fe1ff076844d413eca4cacc11251ef5b0a1"
