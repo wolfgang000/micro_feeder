@@ -36,7 +36,7 @@ jobs:
         run: (cd ../backend/ && make db-migrations)
       - uses: actions/setup-node@v3
         with:
-          node-version: 18.16.0
+          node-version: 20.10.0
           cache: "npm"
           cache-dependency-path: "./frontend/package-lock.json"
       - name: Install dependencies
