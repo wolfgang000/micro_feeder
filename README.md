@@ -54,10 +54,9 @@ Message Broker Store(Redis): `localhost:8006`
 
 [Frontend + E2E](frontend/README.md#run-end-to-end-tests-with-playwright)
 
-
 # Architectural diagram
-![Architectural diagram](https://github.com/wolfgang000/micro_feeder/assets/4041136/63c25a0d-a6b1-4652-b2b1-021b85fce24e)
 
+![Architectural diagram](https://github.com/wolfgang000/micro_feeder/assets/4041136/63c25a0d-a6b1-4652-b2b1-021b85fce24e)
 
 # Deployment
 
@@ -66,7 +65,7 @@ Message Broker Store(Redis): `localhost:8006`
 ```
 # Install dokku
 # wget -NP . https://dokku.com/bootstrap.sh
-# sudo DOKKU_TAG=v0.30.7 bash bootstrap.sh
+# sudo DOKKU_TAG=v0.32.4 bash bootstrap.sh
 # dokku plugin:install https://github.com/dokku/dokku-postgres.git
 # dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
 # dokku plugin:install https://github.com/dokku/dokku-redis.git
