@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@playwright/test": "^1.43.1",
+    "@playwright/test": "^1.44.1",
     "@types/node": "^20.10.0",
     "prettier": "^3.2.5"
   }
