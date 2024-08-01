@@ -25,7 +25,7 @@ itsdangerous = "^2.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.2.2"
+pytest = "^8.3.2"
 black = "^24.4.2"
 mypy = "^1.10.1"
 anyio = {extras = ["trio"], version = "^4.3.0"}
